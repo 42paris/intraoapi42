@@ -131,7 +131,7 @@ UserCandidatureResponse:
     max_level_logic: null
     other_information: null
     language: fr
-    meeting_date: null
+    meeting_date: "2020-08-27T07:31:49.431Z"
     piscine_date: null
     created_at: "2020-08-27T07:31:49.431Z"
     updated_at: "2025-07-10T16:16:34.238Z"
