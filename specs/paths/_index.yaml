@@ -1,5 +1,7 @@
 /closes:
   $ref: ./closes.yaml#/~1closes
+/closes/{id}:
+  $ref: ./closes.yaml#/~1closes~1{id}
 /languages/{id}:
   $ref: ./languages.yaml#/~1languages~1{id}
 /users:
@@ -8,3 +10,5 @@
   $ref: ./users.yaml#/~1users~1{id}
 /users/{id}/user_candidature:
   $ref: ./user_candidatures.yaml#/~1users~1{id}~1user_candidature
+/users/{user_id}/closes:
+  $ref: ./closes.yaml#/~1users~1{user_id}~1closes

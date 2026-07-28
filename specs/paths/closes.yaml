@@ -64,3 +64,98 @@
                 $ref: "#/components/schemas/CloseResponse"
       default:
         $ref: "#/components/responses/ErrorResponse"
+/users/{user_id}/closes:
+  get:
+    operationId: getClosesByUserId
+    summary: Get a list of closes by user id
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: The user id
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        description: |
+          The sort field. Sorted by created_at desc, id desc by default.
+          Must be one of: id, user_id, closer_id, reason, state, created_at, updated_at, kind, end_at, jid.
+        required: false
+        schema:
+          type: string
+          enum:
+            [
+              id,
+              user_id,
+              closer_id,
+              reason,
+              state,
+              created_at,
+              updated_at,
+              kind,
+              end_at,
+              jid,
+            ]
+      - name: filter
+        in: query
+        description: |
+          Filtering on one or more fields. Must be one of: id, user_id, closer_id, reason, state, created_at, updated_at, kind, end_at, jid, campus_id, end.
+        required: false
+        schema:
+          type: object
+          additionalProperties:
+            type: string
+        style: deepObject
+        explode: true
+      - name: range
+        in: query
+        description: |
+          Select on a particular range. Must be one of: id, user_id, closer_id, reason, state, created_at, updated_at, kind, end_at, jid.
+        required: false
+        schema:
+          type: object
+          additionalProperties:
+            type: string
+        style: deepObject
+        explode: true
+      - $ref: "#/components/parameters/page"
+      - $ref: "#/components/parameters/per_page"
+      - $ref: "#/components/parameters/page_number"
+      - $ref: "#/components/parameters/page_size"
+    responses:
+      "200":
+        description: A list of closes
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CloseResponse"
+      default:
+        $ref: "#/components/responses/ErrorResponse"
+/closes/{id}:
+  get:
+    operationId: getCloseById
+    summary: Get a close by ID
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the close
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: A close object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CloseResponse"
+      default:
+        $ref: "#/components/responses/ErrorResponse"
