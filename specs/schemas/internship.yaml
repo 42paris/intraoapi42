@@ -1,0 +1,153 @@
+InternshipResponse:
+  type: object
+  properties:
+    id:
+      type: integer
+    administration_id:
+      type: integer
+    offer_id:
+      type: integer
+      nullable: true
+    language_id:
+      type: integer
+    state:
+      type: string
+    days:
+      type: string
+    user_address:
+      type: string
+    user_postal:
+      type: string
+    user_city:
+      type: string
+    user_country:
+      type: string
+    company_name:
+      type: string
+    company_boss_user_first_name:
+      type: string
+    company_boss_user_last_name:
+      type: string
+    company_boss_user_email:
+      type: string
+    company_boss_user_phone:
+      type: string
+    company_user_first_name:
+      type: string
+    company_user_last_name:
+      type: string
+    company_user_post:
+      type: string
+    company_user_email:
+      type: string
+    company_user_phone:
+      type: string
+    company_address:
+      type: string
+    company_postal:
+      type: string
+    company_city:
+      type: string
+    company_country:
+      type: string
+    company_siret:
+      type: string
+    internship_address:
+      type: string
+    internship_postal:
+      type: string
+    internship_city:
+      type: string
+    internship_country:
+      type: string
+    contract_type:
+      type: string
+    subject:
+      type: string
+    start_at:
+      type: string
+      format: date-time
+    end_at:
+      type: string
+      format: date-time
+    duration:
+      type: integer
+    nb_days:
+      type: integer
+    nb_hours:
+      type: integer
+    salary:
+      anyOf:
+        - type: integer
+        - type: number
+    currency:
+      type: string
+    breach_at:
+      type: string
+      format: date-time
+      nullable: true
+    convention:
+      type: object
+      properties:
+        convention:
+          type: object
+          properties:
+            url:
+              type: string
+              nullable: true
+          required:
+            - url
+      required:
+        - convention
+    convention_uri:
+      type: string
+      format: url
+      nullable: true
+    projects_user:
+      type: integer
+      nullable: true
+    user:
+      $ref: "#/components/schemas/LightUserResponse"
+  required:
+    - id
+    - administration_id
+    - offer_id
+    - language_id
+    - state
+    - days
+    - user_address
+    - user_postal
+    - user_city
+    - user_country
+    - company_name
+    - company_boss_user_first_name
+    - company_boss_user_last_name
+    - company_boss_user_email
+    - company_boss_user_phone
+    - company_user_first_name
+    - company_user_last_name
+    - company_user_post
+    - company_user_email
+    - company_user_phone
+    - company_address
+    - company_postal
+    - company_city
+    - company_country
+    - company_siret
+    - internship_address
+    - internship_postal
+    - internship_city
+    - internship_country
+    - contract_type
+    - subject
+    - start_at
+    - end_at
+    - duration
+    - nb_days
+    - nb_hours
+    - salary
+    - currency
+    - breach_at
+    - convention
+    - convention_uri
+    - user

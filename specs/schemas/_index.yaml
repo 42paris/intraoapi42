@@ -16,6 +16,8 @@ Error:
   $ref: ./error.yaml#/Error
 GroupResponse:
   $ref: ./group.yaml#/GroupResponse
+InternshipResponse:
+  $ref: ./internship.yaml#/InternshipResponse
 IntraDateTime:
   $ref: ./intra_date_time.yaml#/IntraDateTime
 LanguageResponse:

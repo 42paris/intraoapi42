@@ -315,6 +315,70 @@ type GroupResponse struct {
 	Name string `json:"name"`
 }
 
+// InternshipResponse defines model for InternshipResponse.
+type InternshipResponse struct {
+	AdministrationId         int        `json:"administration_id"`
+	BreachAt                 *time.Time `json:"breach_at"`
+	CompanyAddress           string     `json:"company_address"`
+	CompanyBossUserEmail     string     `json:"company_boss_user_email"`
+	CompanyBossUserFirstName string     `json:"company_boss_user_first_name"`
+	CompanyBossUserLastName  string     `json:"company_boss_user_last_name"`
+	CompanyBossUserPhone     string     `json:"company_boss_user_phone"`
+	CompanyCity              string     `json:"company_city"`
+	CompanyCountry           string     `json:"company_country"`
+	CompanyName              string     `json:"company_name"`
+	CompanyPostal            string     `json:"company_postal"`
+	CompanySiret             string     `json:"company_siret"`
+	CompanyUserEmail         string     `json:"company_user_email"`
+	CompanyUserFirstName     string     `json:"company_user_first_name"`
+	CompanyUserLastName      string     `json:"company_user_last_name"`
+	CompanyUserPhone         string     `json:"company_user_phone"`
+	CompanyUserPost          string     `json:"company_user_post"`
+	ContractType             string     `json:"contract_type"`
+	Convention               struct {
+		Convention struct {
+			Url *string `json:"url"`
+		} `json:"convention"`
+	} `json:"convention"`
+	ConventionUri     *string                   `json:"convention_uri"`
+	Currency          string                    `json:"currency"`
+	Days              string                    `json:"days"`
+	Duration          int                       `json:"duration"`
+	EndAt             time.Time                 `json:"end_at"`
+	Id                int                       `json:"id"`
+	InternshipAddress string                    `json:"internship_address"`
+	InternshipCity    string                    `json:"internship_city"`
+	InternshipCountry string                    `json:"internship_country"`
+	InternshipPostal  string                    `json:"internship_postal"`
+	LanguageId        int                       `json:"language_id"`
+	NbDays            int                       `json:"nb_days"`
+	NbHours           int                       `json:"nb_hours"`
+	OfferId           *int                      `json:"offer_id"`
+	ProjectsUser      *int                      `json:"projects_user,omitempty"`
+	Salary            InternshipResponse_Salary `json:"salary"`
+	StartAt           time.Time                 `json:"start_at"`
+	State             string                    `json:"state"`
+	Subject           string                    `json:"subject"`
+
+	// User Example: {"active":true,"alumni?":false,"alumnized_at":null,"anonymize_date":"2025-10-24T00:00:00.000+02:00","correction_point":4,"created_at":"2018-07-17T08:57:33.128Z","data_erasure_date":"2025-10-24T00:00:00.000+02:00","displayname":"Malo Allain","email":"malallai@student.42.fr","first_name":"Malo","id":39962,"image":{"link":"https://cdn.intra.42.fr/users/39a641ed152b654cfbff5c5864eb05c1/malallai.jpg","versions":{"large":"https://cdn.intra.42.fr/users/a818d7a54298d333411557d0b55b61b3/large_malallai.jpg","medium":"https://cdn.intra.42.fr/users/53691acd1e0ea75b782ddbe121c17423/medium_malallai.jpg","micro":"https://cdn.intra.42.fr/users/6f74b46e2016b0e6c41fa05b5952e17c/micro_malallai.jpg","small":"https://cdn.intra.42.fr/users/617de91b59fd7e59ecaf6470a4b37645/small_malallai.jpg"}},"kind":"student","last_name":"Allain","location":null,"login":"malallai","phone":"hidden","pool_month":"august","pool_year":"2018","staff":false,"updated_at":"2022-09-27T18:48:28.207Z","url":"https://api.intra.42.fr/v2/users/malallai","usual_first_name":null,"usual_full_name":"Malo Allain","wallet":290}
+	User        LightUserResponse `json:"user"`
+	UserAddress string            `json:"user_address"`
+	UserCity    string            `json:"user_city"`
+	UserCountry string            `json:"user_country"`
+	UserPostal  string            `json:"user_postal"`
+}
+
+// InternshipResponseSalary0 defines model for InternshipResponse.Salary.0.
+type InternshipResponseSalary0 = int
+
+// InternshipResponseSalary1 defines model for InternshipResponse.Salary.1.
+type InternshipResponseSalary1 = float32
+
+// InternshipResponse_Salary defines model for InternshipResponse.Salary.
+type InternshipResponse_Salary struct {
+	union json.RawMessage
+}
+
 // IntraDateTime Example: 2017-03-25T13:30:00.000Z
 type IntraDateTime = IntraTime
 
@@ -480,7 +544,7 @@ type TitleUserResponse struct {
 	UserId    int       `json:"user_id"`
 }
 
-// UserCandidatureResponse Example: {"birth_city":"Paris","birth_country":"France","birth_date":"2013-01-01","contact_affiliation":"Parent","contact_first_name":"Norminette","contact_last_name":"Moulinette","contact_phone1":"+33600000000","contact_phone2":null,"country":"France","created_at":"2020-08-27T07:31:49.431Z","email":"tmatis@example.com","gender":"male","hidden_phone":false,"id":42,"language":"fr","max_level_logic":null,"max_level_memory":null,"meeting_date":null,"other_information":null,"phone":"+33600000000","phone_country_code":"FR","pin":"7777","piscine_date":null,"postal_city":"Paris","postal_complement":null,"postal_country":"France","postal_street":"96 boulevard Bessières","postal_zip_code":"75017","updated_at":"2025-07-10T16:16:34.238Z","user_id":42,"zip_code":"75017"}
+// UserCandidatureResponse Example: {"birth_city":"Paris","birth_country":"France","birth_date":"2013-01-01","contact_affiliation":"Parent","contact_first_name":"Norminette","contact_last_name":"Moulinette","contact_phone1":"+33600000000","contact_phone2":null,"country":"France","created_at":"2020-08-27T07:31:49.431Z","email":"tmatis@example.com","gender":"male","hidden_phone":false,"id":42,"language":"fr","max_level_logic":null,"max_level_memory":null,"meeting_date":"2020-08-27T07:31:49.431Z","other_information":null,"phone":"+33600000000","phone_country_code":"FR","pin":"7777","piscine_date":null,"postal_city":"Paris","postal_complement":null,"postal_country":"France","postal_street":"96 boulevard Bessières","postal_zip_code":"75017","updated_at":"2025-07-10T16:16:34.238Z","user_id":42,"zip_code":"75017"}
 type UserCandidatureResponse struct {
 	BirthCity          string                         `json:"birth_city"`
 	BirthCountry       *string                        `json:"birth_country,omitempty"`
@@ -673,6 +737,37 @@ type GetClosesParams struct {
 // GetClosesParamsSort defines parameters for GetCloses.
 type GetClosesParamsSort string
 
+// GetInternshipsParams defines parameters for GetInternships.
+type GetInternshipsParams struct {
+	// Sort The sort field. Sorted by id desc by default.
+	// Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id.
+	// Example: -updated_at,anti_grav_units_user_id (to sort by updated_at descending and anti_grav_units_user_id ascending)
+	Sort *string `form:"sort,omitempty" json:"sort,omitempty"`
+
+	// Filter Filtering on one or more fields.
+	// Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id.
+	// Example: filter[id]=a_value,another_value (to filter on internships with id matching a_value or another_value)
+	Filter *map[string]string `json:"filter,omitempty"`
+
+	// Range Select on a particular range.
+	// Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at.
+	// Example: range[status]=min_value,max_value (to range on internships with status field between min_value and max_value)
+	Range *map[string]string `json:"range,omitempty"`
+
+	// Page Page number (1-based). The 42 API paginates index endpoints and defaults to 30 items per page.
+	// You can also use the `per_page` parameter to set the page size (up to 100 for many endpoints).
+	Page *Page `form:"page,omitempty" json:"page,omitempty"`
+
+	// PerPage Number of items per page. Maximum is generally 100 but some endpoints limit this for technical reasons.
+	PerPage *PerPage `form:"per_page,omitempty" json:"per_page,omitempty"`
+
+	// PageNumber Alternate pagination style using `page[number]` (1-based page index). Can be used together with `page[size]`.
+	PageNumber *PageNumber `form:"page[number],omitempty" json:"page[number],omitempty"`
+
+	// PageSize Alternate pagination style to set the page size (maximum depends on endpoint, commonly up to 100).
+	PageSize *PageSize `form:"page[size],omitempty" json:"page[size],omitempty"`
+}
+
 // GetUsersParams defines parameters for GetUsers.
 type GetUsersParams struct {
 	// Sort The sort field. Sorted by id desc by default.
@@ -732,6 +827,68 @@ type GetClosesByUserIdParams struct {
 
 // GetClosesByUserIdParamsSort defines parameters for GetClosesByUserId.
 type GetClosesByUserIdParamsSort string
+
+// AsInternshipResponseSalary0 returns the union data inside the InternshipResponse_Salary as a InternshipResponseSalary0
+func (t InternshipResponse_Salary) AsInternshipResponseSalary0() (InternshipResponseSalary0, error) {
+	var body InternshipResponseSalary0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromInternshipResponseSalary0 overwrites any union data inside the InternshipResponse_Salary as the provided InternshipResponseSalary0
+func (t *InternshipResponse_Salary) FromInternshipResponseSalary0(v InternshipResponseSalary0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeInternshipResponseSalary0 performs a merge with any union data inside the InternshipResponse_Salary, using the provided InternshipResponseSalary0
+func (t *InternshipResponse_Salary) MergeInternshipResponseSalary0(v InternshipResponseSalary0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsInternshipResponseSalary1 returns the union data inside the InternshipResponse_Salary as a InternshipResponseSalary1
+func (t InternshipResponse_Salary) AsInternshipResponseSalary1() (InternshipResponseSalary1, error) {
+	var body InternshipResponseSalary1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromInternshipResponseSalary1 overwrites any union data inside the InternshipResponse_Salary as the provided InternshipResponseSalary1
+func (t *InternshipResponse_Salary) FromInternshipResponseSalary1(v InternshipResponseSalary1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeInternshipResponseSalary1 performs a merge with any union data inside the InternshipResponse_Salary, using the provided InternshipResponseSalary1
+func (t *InternshipResponse_Salary) MergeInternshipResponseSalary1(v InternshipResponseSalary1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t InternshipResponse_Salary) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *InternshipResponse_Salary) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // RequestEditorFn is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -817,6 +974,11 @@ type ClientInterface interface {
 	// Corresponds with GET /closes/{id} (the `GetCloseById` operationId).
 	GetCloseById(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetInternships Get a list of internships
+	//
+	// Corresponds with GET /internships (the `GetInternships` operationId).
+	GetInternships(ctx context.Context, params *GetInternshipsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetLanguageById Get a language by ID
 	//
 	// Corresponds with GET /languages/{id} (the `GetLanguageById` operationId).
@@ -863,6 +1025,21 @@ func (c *Client) GetCloses(ctx context.Context, params *GetClosesParams, reqEdit
 // Corresponds with GET /closes/{id} (the `GetCloseById` operationId).
 func (c *Client) GetCloseById(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetCloseByIdRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetInternships Get a list of internships
+//
+// Corresponds with GET /internships (the `GetInternships` operationId).
+func (c *Client) GetInternships(ctx context.Context, params *GetInternshipsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetInternshipsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1098,6 +1275,132 @@ func NewGetCloseByIdRequest(server string, id int) (*http.Request, error) {
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetInternshipsRequest constructs an http.Request for the GetInternships method
+func NewGetInternshipsRequest(server string, params *GetInternshipsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/internships")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Sort != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "sort", *params.Sort, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Filter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("deepObject", true, "filter", *params.Filter, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "object", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Range != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("deepObject", true, "range", *params.Range, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "object", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Page != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page", *params.Page, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.PerPage != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "per_page", *params.PerPage, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.PageNumber != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page[number]", *params.PageNumber, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.PageSize != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "page[size]", *params.PageSize, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -1527,6 +1830,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /closes/{id} (the `GetCloseById` operationId).
 	GetCloseByIdWithResponse(ctx context.Context, id int, reqEditors ...RequestEditorFn) (*GetCloseByIdResponse, error)
 
+	// GetInternshipsWithResponse Get a list of internships
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /internships (the `GetInternships` operationId).
+	GetInternshipsWithResponse(ctx context.Context, params *GetInternshipsParams, reqEditors ...RequestEditorFn) (*GetInternshipsResponse, error)
+
 	// GetLanguageByIdWithResponse Get a language by ID
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -1653,6 +1963,64 @@ func (r GetCloseByIdResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetCloseByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetInternshipsResponse200Headers the declared response headers of an HTTP 200 response for GetInternships
+type GetInternshipsResponse200Headers struct {
+	Link     *string
+	XPage    *int
+	XPerPage *int
+	XTotal   *int
+}
+
+type GetInternshipsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *[]InternshipResponse
+	// JSONDefault the response for an HTTP default `application/json` response
+	JSONDefault *ErrorResponse
+	// Headers200 the parsed response headers for an HTTP 200 response
+	Headers200 *GetInternshipsResponse200Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetInternshipsResponse) GetJSON200() *[]InternshipResponse {
+	return r.JSON200
+}
+
+// GetJSONDefault returns the response for an HTTP default `application/json` response
+func (r GetInternshipsResponse) GetJSONDefault() *ErrorResponse {
+	return r.JSONDefault
+}
+
+// GetBody returns the raw response body bytes
+func (r GetInternshipsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetInternshipsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetInternshipsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetInternshipsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -1935,6 +2303,19 @@ func (c *ClientWithResponses) GetCloseByIdWithResponse(ctx context.Context, id i
 	return ParseGetCloseByIdResponse(rsp)
 }
 
+// GetInternshipsWithResponse Get a list of internships
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /internships (the `GetInternships` operationId).
+func (c *ClientWithResponses) GetInternshipsWithResponse(ctx context.Context, params *GetInternshipsParams, reqEditors ...RequestEditorFn) (*GetInternshipsResponse, error) {
+	rsp, err := c.GetInternships(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetInternshipsResponse(rsp)
+}
+
 // GetLanguageByIdWithResponse Get a language by ID
 //
 // Returns a wrapper object for the known response body format(s).
@@ -2061,6 +2442,73 @@ func ParseGetCloseByIdResponse(rsp *http.Response) (*GetCloseByIdResponse, error
 		}
 		response.JSONDefault = &dest
 
+	}
+
+	return response, nil
+}
+
+// ParseGetInternshipsResponse parses an HTTP response from a GetInternshipsWithResponse call
+func ParseGetInternshipsResponse(rsp *http.Response) (*GetInternshipsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetInternshipsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []InternshipResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 200:
+		var headers GetInternshipsResponse200Headers
+		if values := rsp.Header.Values("Link"); len(values) > 0 {
+			var value string
+			if err := runtime.BindStyledParameterWithOptions("simple", "Link", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.Link = &value
+		}
+		if values := rsp.Header.Values("X-Page"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Page", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XPage = &value
+		}
+		if values := rsp.Header.Values("X-Per-Page"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Per-Page", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XPerPage = &value
+		}
+		if values := rsp.Header.Values("X-Total"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "X-Total", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.XTotal = &value
+		}
+		response.Headers200 = &headers
 	}
 
 	return response, nil

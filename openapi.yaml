@@ -95,6 +95,73 @@ paths:
                 $ref: '#/components/schemas/CloseResponse'
         default:
           $ref: '#/components/responses/ErrorResponse'
+  /internships:
+    get:
+      operationId: getInternships
+      summary: Get a list of internships
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: sort
+          in: query
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id.
+            Example: -updated_at,anti_grav_units_user_id (to sort by updated_at descending and anti_grav_units_user_id ascending)
+          required: false
+          schema:
+            type: string
+        - name: filter
+          in: query
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id.
+            Example: filter[id]=a_value,another_value (to filter on internships with id matching a_value or another_value)
+          required: false
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+          style: deepObject
+          explode: true
+        - name: range
+          in: query
+          description: |
+            Select on a particular range.
+            Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at.
+            Example: range[status]=min_value,max_value (to range on internships with status field between min_value and max_value)
+          required: false
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+          style: deepObject
+          explode: true
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of internships
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InternshipResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
   /languages/{id}:
     get:
       operationId: getLanguageById
@@ -578,6 +645,159 @@ components:
       required:
         - id
         - name
+    InternshipResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        administration_id:
+          type: integer
+        offer_id:
+          type: integer
+          nullable: true
+        language_id:
+          type: integer
+        state:
+          type: string
+        days:
+          type: string
+        user_address:
+          type: string
+        user_postal:
+          type: string
+        user_city:
+          type: string
+        user_country:
+          type: string
+        company_name:
+          type: string
+        company_boss_user_first_name:
+          type: string
+        company_boss_user_last_name:
+          type: string
+        company_boss_user_email:
+          type: string
+        company_boss_user_phone:
+          type: string
+        company_user_first_name:
+          type: string
+        company_user_last_name:
+          type: string
+        company_user_post:
+          type: string
+        company_user_email:
+          type: string
+        company_user_phone:
+          type: string
+        company_address:
+          type: string
+        company_postal:
+          type: string
+        company_city:
+          type: string
+        company_country:
+          type: string
+        company_siret:
+          type: string
+        internship_address:
+          type: string
+        internship_postal:
+          type: string
+        internship_city:
+          type: string
+        internship_country:
+          type: string
+        contract_type:
+          type: string
+        subject:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+        nb_days:
+          type: integer
+        nb_hours:
+          type: integer
+        salary:
+          anyOf:
+            - type: integer
+            - type: number
+        currency:
+          type: string
+        breach_at:
+          type: string
+          format: date-time
+          nullable: true
+        convention:
+          type: object
+          properties:
+            convention:
+              type: object
+              properties:
+                url:
+                  type: string
+                  nullable: true
+              required:
+                - url
+          required:
+            - convention
+        convention_uri:
+          type: string
+          format: url
+          nullable: true
+        projects_user:
+          type: integer
+          nullable: true
+        user:
+          $ref: '#/components/schemas/LightUserResponse'
+      required:
+        - id
+        - administration_id
+        - offer_id
+        - language_id
+        - state
+        - days
+        - user_address
+        - user_postal
+        - user_city
+        - user_country
+        - company_name
+        - company_boss_user_first_name
+        - company_boss_user_last_name
+        - company_boss_user_email
+        - company_boss_user_phone
+        - company_user_first_name
+        - company_user_last_name
+        - company_user_post
+        - company_user_email
+        - company_user_phone
+        - company_address
+        - company_postal
+        - company_city
+        - company_country
+        - company_siret
+        - internship_address
+        - internship_postal
+        - internship_city
+        - internship_country
+        - contract_type
+        - subject
+        - start_at
+        - end_at
+        - duration
+        - nb_days
+        - nb_hours
+        - salary
+        - currency
+        - breach_at
+        - convention
+        - convention_uri
+        - user
     IntraDateTime:
       type: string
       format: date-time
@@ -1044,7 +1264,7 @@ components:
         max_level_logic: null
         other_information: null
         language: fr
-        meeting_date: null
+        meeting_date: '2020-08-27T07:31:49.431Z'
         piscine_date: null
         created_at: '2020-08-27T07:31:49.431Z'
         updated_at: '2025-07-10T16:16:34.238Z'

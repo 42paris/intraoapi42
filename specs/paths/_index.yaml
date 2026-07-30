@@ -2,6 +2,8 @@
   $ref: ./closes.yaml#/~1closes
 /closes/{id}:
   $ref: ./closes.yaml#/~1closes~1{id}
+/internships:
+  $ref: ./internships.yaml#/~1internships
 /languages/{id}:
   $ref: ./languages.yaml#/~1languages~1{id}
 /users:
