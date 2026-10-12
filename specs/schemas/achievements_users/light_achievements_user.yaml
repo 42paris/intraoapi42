@@ -1,0 +1,33 @@
+LightAchievementsUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    achievement_id:
+      type: integer
+    user_id:
+      type: integer
+    login:
+      type: string
+    nbr_of_success:
+      type: [integer, "null"]
+    url:
+      type: string
+      format: uri
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - achievement_id
+    - user_id
+    - login
+    - nbr_of_success
+    - url
+    - created_at
+    - updated_at

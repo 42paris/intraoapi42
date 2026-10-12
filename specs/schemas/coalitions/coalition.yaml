@@ -1,0 +1,28 @@
+Coalition:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    slug:
+      type: string
+    image_url:
+      type: [string, "null"]
+      format: uri
+    cover_url:
+      type: [string, "null"]
+      format: uri
+    color:
+      type: string
+    score:
+      type: integer
+    user_id:
+      type: integer
+  required:
+    - id
+    - name
+    - slug
+    - color
+    - score
+    - user_id

@@ -1,0 +1,74 @@
+TeamUpdate:
+  type: object
+  properties:
+    project_id:
+      type: [integer, "null"]
+      format: int64
+      description: The project id.
+    name:
+      type: [string, "null"]
+      maxLength: 255
+      description: The name.
+    created_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    locked_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    closed_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    final_mark:
+      type: [integer, "null"]
+      format: int64
+      description: The final mark.
+    repo_url:
+      type: [string, "null"]
+      description: The repo url.
+    repo_uuid:
+      type: [string, "null"]
+      description: The repo uuid.
+    deadline_at:
+      type: [integer, "null"]
+      format: int64
+      description: The deadline at. Must be after today.
+    terminating_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    project_session_id:
+      type: [integer, "null"]
+      format: int64
+      description: The project session id.
+    teams_users_attributes:
+      type: [array, "null"]
+      description: The teams users attributes.
+      items:
+        type: object
+        required:
+          - user_id
+        properties:
+          user_id:
+            type: integer
+            format: int64
+            description: The user id. Must be unique in the scope of a given team.
+          leader:
+            type: [boolean, "null"]
+            default: false
+            description: Is it leader?
+          validated:
+            type: [boolean, "null"]
+            default: false
+            description: Is it validated?
+          occurrence:
+            type: [integer, "null"]
+            format: int64
+            default: 0
+            description: The occurrence.

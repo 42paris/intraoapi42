@@ -1,153 +1,115 @@
-# intraoapi42
+# Intra 42 API — OpenAPI Rewrite
 
-A Go client for the [42 Intranet API](https://api.intra.42.fr), generated from an OpenAPI 3 description with [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen), plus a thin wrapper handling OAuth2 client-credentials auth and automatic retries.
+Community-driven rewrite of the [42 School Intra API](https://api.intra.42.fr/apidoc) as a proper [OpenAPI 3.1](https://spec.openapis.org/oas/v3.1.2.html) specification, with auto-generated, published clients for **Go**, **Python**, and **TypeScript**.
 
-> ⚠️ **Unofficial spec.** The OpenAPI description in this repo is **not** provided by 42. It has been hand-crafted from the public [`api.intra.42.fr/apidoc`](https://api.intra.42.fr/apidoc) reference and from observing real responses. Coverage of the full API surface is currently partial, **contributions are very welcome**, see [Contributing](#contributing).
+The original Intra API documentation predates OpenAPI tooling and offers no machine-readable contract, no generated clients, and inconsistent or missing details on required roles, scopes, and response shapes. This project rebuilds the spec endpoint by endpoint, verifying each one against real responses, and ships ready-to-use client libraries generated directly from that spec.
 
-> 💡 **Not a Go user?** The bundled [`openapi.yaml`](./openapi.yaml) is a standard, self-contained OpenAPI 3 document, it isn't tied to `oapi-codegen` or to Go. You can feed it into any other client generator (e.g. [openapi-generator](https://openapi-generator.tech/), [openapi-python-client](https://github.com/openapi-generators/openapi-python-client), Swagger Codegen, etc.) to produce a client in Python, TypeScript, Java, Rust, or whatever language you need. See [Using the spec in other languages](#using-the-spec-in-other-languages).
+## Live documentation
 
-## Features
+The rendered API reference (built with [Scalar](https://scalar.com)) is published from the [`docs/`](./docs) directory. It includes custom conventions on top of the base spec:
 
-- Strongly-typed request/response models generated straight from the OpenAPI spec (`ClientWithResponses`)
-- OAuth2 client-credentials flow with automatic, cached, thread-safe token refresh
-- Built-in retry transport for rate limiting, transient server errors, and expired tokens
-- Spec split into small, per-resource YAML files under `specs/`, bundled and linted with [Redocly CLI](https://redocly.com/docs/cli)
-- The bundled `openapi.yaml` is plain OpenAPI 3, language-agnostic, so it can drive client generation for Python, TypeScript, or any other language, not just this Go package
+| Marker | Meaning                                                                                       |
+| ------ | --------------------------------------------------------------------------------------------- |
+| 🔑     | Restricted call — requires an elevated staff role and/or an application scope beyond `public` |
+| 👤     | Restricted to the authenticated resource owner                                                |
 
-## Installation
+Progress on rewriting each endpoint is tracked in [`openapi-rewrite-progress.md`](./openapi-rewrite-progress.md).
 
-```bash
-go get github.com/42paris/intraoapi42
-```
-
-## Quick start
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"log"
-
-	intraoapi42 "github.com/42paris/intraoapi42"
-)
-
-func main() {
-	ctx := context.Background()
-
-	config := intraoapi42.ProductionConfig.
-		WithClientCredentials("your-client-id", "your-client-secret").
-		WithScopes("public")
-
-	client, err := intraoapi42.New(config)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	resp, err := client.GetUsersWithResponse(ctx, &intraoapi42.GetUsersParams{})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(resp.StatusCode())
-}
-```
-
-> The exact generated method and parameter names (`Get...WithResponse`, `...Params`, etc.) come from the `operationId`s defined under `specs/paths/` and live in `openapi.gen.go`. Browse that file (or run `go doc github.com/42paris/intraoapi42`) for the full list of currently available endpoints, it will grow as the spec gets more complete.
-
-## Using the spec in other languages
-
-This repo's real deliverable is arguably the spec itself: `openapi.yaml` at the repo root is a fully bundled, single-file OpenAPI 3 description with no external `$ref`s left to resolve. It has no dependency on Go or on `oapi-codegen`, so it works as input to any OpenAPI-compatible generator. For example:
-
-```bash
-# Python (openapi-python-client)
-pip install openapi-python-client
-openapi-python-client generate --url https://raw.githubusercontent.com/42paris/intraoapi42/main/openapi.yaml
-
-# Any language, via the generic openapi-generator (needs Java)
-npx @openapitools/openapi-generator-cli generate \
-  -i openapi.yaml \
-  -g python \
-  -o ./client-python
-# swap "-g python" for "-g typescript-fetch", "-g java", "-g rust", etc.
-```
-
-A few things worth knowing if you go this route:
-
-- Always generate from the bundled `openapi.yaml`, not from files under `specs/`, those are hand-maintained fragments meant to be assembled by `make bundle` and aren't valid standalone specs.
-- Since the spec is hand-crafted and partial (see the note at the top of this README), coverage and accuracy for generators other than `oapi-codegen` haven't been verified as thoroughly, please report issues, they most likely mean the spec needs fixing rather than the generator.
-- OAuth2 client-credentials handling, retries, and pagination helpers are specific to this Go package, generators for other languages will only give you the typed request/response models and raw HTTP calls, you'll need to write the equivalent auth/retry glue yourself.
-
-## Retry mechanism
-
-`New(config)` wires up an HTTP client with two layered `http.RoundTripper`s:
-
-1. **`oauth2.Transport`**, injects the `Authorization: Bearer <token>` header, backed by a `refreshableTokenSource` that caches the token in memory (guarded by a mutex) and only hits the token endpoint again once the cached token is invalid or expired.
-2. **`retryTransport`**, wraps the above and retries the request based on the response status:
-
-| Status                      | Behavior                                                                                                     |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `429 Too Many Requests`     | Retried up to **3** times, waiting **1s** between attempts                                                   |
-| `500 Internal Server Error` | Retried up to **5** times, waiting **500ms** between attempts                                                |
-| `401 Unauthorized`          | The cached token is invalidated (forcing a fresh token fetch on the next attempt) and the request is retried |
-
-## Repository layout
+## Project structure
 
 ```
 .
-├── client.go                # Config, New(), retry transport, token source
-├── time.go                  # custom time handling for the intra API's date/time formats
-├── generate.go              # go:generate directive driving oapi-codegen
-├── openapi.gen.go           # generated Go client (do not edit by hand)
-├── openapi.yaml             # bundled, single-file OpenAPI spec (generated, do not edit by hand)
-├── specs/                   # hand-maintained OpenAPI spec, split by concern
-│   ├── openapi.yaml         # spec root, references the folders below
-│   ├── paths/               # one file per resource/endpoint group
-│   ├── schemas/             # one file per data model
-│   └── parameters/          # shared/reusable parameters (e.g. pagination)
-└── tool/
-    ├── generate_indexes.py  # regenerates each specs/*/_index.yaml
-    └── requirements.txt
+├── specs/           # Source of truth: modular OpenAPI fragments (paths, schemas, parameters)
+├── openapi/         # Bundled, released OpenAPI contract (generated from specs/)
+├── clients/         # Generated API clients, one per language
+│   ├── go/
+│   ├── python/
+│   └── typescript/
+├── docs/            # Scalar-based API reference site + custom plugins
+├── tool/            # Build tooling (index generation, versioning scripts)
+└── .github/         # CI/CD workflows
 ```
 
-Each folder under `specs/` (`paths`, `schemas`, `parameters`) has an auto-generated `_index.yaml` that aggregates every top-level key defined in that folder into `$ref` entries, so the root spec can reference the whole folder without listing every file by hand. **Never edit `_index.yaml` files directly**, they're regenerated by `tool/generate_indexes.py`.
+### `specs/`
 
-## Working on the spec
+The hand-maintained source of the API contract. Split into three concerns to keep large resources manageable:
 
-The Makefile drives the whole spec pipeline (Docker is the only local dependency, no need to install Python or Node yourself):
+- **`paths/`** — one directory per resource (e.g. `users`, `closes`, `coalitions`), each containing the path definitions and operations for that resource.
+- **`schemas/`** — one directory per resource, containing the data models. Shared types (e.g. `error.yaml`) live at the top level.
+- **`parameters/`** — reusable parameters (pagination, filtering, sorting) shared across operations.
 
-```bash
-make indexes   # regenerate specs/{paths,schemas,parameters}/_index.yaml
-make bundle    # bundle specs/openapi.yaml + all $refs into ./openapi.yaml
-make lint      # lint ./openapi.yaml with redocly/cli
-make all       # runs the three steps above, in order
-```
+Each directory contains an auto-generated `_index.yaml` that aggregates its contents. The root `specs/openapi.yaml` holds the top-level OpenAPI metadata — info, servers, security schemes.
 
-Once `openapi.yaml` is up to date, regenerate the Go client bindings:
+### `openapi/`
 
-```bash
-go generate ./...   # runs generate.go, invoking oapi-codegen against openapi.yaml
-go build ./...
-```
+The bundled, single-file OpenAPI document produced from `specs/`, versioned and released independently via `semantic-release`. This is the artifact consumers and code generators actually depend on.
 
-`oapi-codegen` is declared as a Go **tool dependency** in `go.mod` (`tool github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen`), so `go generate` can invoke it via `go tool` without a separate global install.
+### `clients/`
 
-If you're generating a client for a different language instead, you only need `make all` to produce an up-to-date `openapi.yaml`, then point your generator of choice at it as shown in [Using the spec in other languages](#using-the-spec-in-other-languages).
+Each client is generated from the bundled spec in `openapi/` and released independently:
+
+| Client| Generator | Package |
+|-------|-----------|---------|
+| Go | [`oapi-codegen`](https://github.com/oapi-codegen/oapi-codegen) | [`github.com/42paris/intraoapi42/clients/go`](https://pkg.go.dev/github.com/42paris/intraoapi42/clients/go) |
+| Python | [`openapi-python-client`](https://pypi.org/project/openapi-python-client/) with custom templates | [`intraoapi42`](https://test.pypi.org/project/intraoapi42/) on PyPI |
+| TypeScript | [`openapi-typescript`](https://www.npmjs.com/package/openapi-typescript) | [`@cdurdetrouver/intraoapi42`](https://www.npmjs.com/package/@42paris/intraoapi42) on npm |
+
+Each client directory is self-contained (own `Dockerfile`, `config.yaml`, `.releaserc.json`) and can be regenerated and released independently of the others.
+
+### `docs/`
+
+The Scalar-based documentation site (`index.html`) plus a custom Scalar plugin (`scalar-required-roles-plugin.js`) that renders the 🔑/👤 role and scope requirements directly on each operation page, matching Scalar's native styling.
+
+## Getting started
+
+### Prerequisites
+
+All spec bundling, linting, and client generation runs inside Docker containers via the `Makefile` — you don't need Go, Python, or Node installed locally to contribute to the spec itself. The only requirement is:
+
+- [Docker](https://docs.docker.com/get-docker/)
+
+Toolchain versions for local development on the clients themselves (if you need to work inside `clients/go`, `clients/python`, or `clients/typescript` directly) are pinned via [Nix flakes](https://nixos.wiki/wiki/Flakes) (`flake.nix` / `.envrc` with [direnv](https://direnv.net/)), which provisions Node.js, Go, and Python automatically when entering the project directory.
 
 ## Contributing
 
-This client is only as good as the spec behind it, and the spec is currently incomplete, plenty of endpoints, schemas, and edge cases from the real 42 API aren't described yet. Contributions of any size are welcome, especially:
+Contributions are welcome!
 
-- New or missing `paths` (endpoints) and `schemas` (models)
-- Corrections to existing schemas: wrong types, missing `required`/nullable fields, incomplete enums
-- Better-documented error responses
-- Usage examples and documentation improvements
+To contribute, edit the relevant files under [`specs/`](./specs) — this is the source of truth for the API contract (paths, schemas, and parameters).
 
-### How to contribute
+Once you've made your changes, run:
 
-1. Fork the repo and create a branch.
-2. Add or edit YAML under `specs/paths/`, `specs/schemas/`, or `specs/parameters/`, one file per resource, mirroring the existing style. Don't hand-edit `_index.yaml` or the root `openapi.yaml`.
-3. Run `make all` to regenerate the indexes, rebuild the bundled `openapi.yaml`, and lint it, fix any lint errors before opening a PR.
-4. Run `go generate ./...` and confirm `go build ./...` / `go vet ./...` still pass.
-5. Open a PR describing which endpoint(s)/schema(s) you added or changed, and how you verified them against the real API (a sample response, a link into the [apidoc](https://api.intra.42.fr/apidoc), etc.), since the spec is hand-crafted, this kind of provenance is what keeps it trustworthy.
+```bash
+make all
+```
+
+This regenerates the index files, bundles the spec, and lints the result — confirming that `openapi/openapi.yaml` is valid.
+
+Then, regenerate the clients:
+
+```bash
+make generate-clients
+```
+
+This updates the Go, Python, and TypeScript clients under [`clients/`](./clients) to match your spec changes. You can also generate a single client individually with `make generate-go`, `make generate-python`, or `make generate-typescript`.
+
+Before opening a pull request:
+
+- Update [`openapi-rewrite-progress.md`](./openapi-rewrite-progress.md) to reflect the status of the endpoint(s) you worked on.
+- Run `make ci-check` to confirm your generated files are fully in sync with your spec changes — this is the same check CI runs, so a clean local run means CI won't flag drift.
+
+### Commit messages
+
+Commits must follow the [Angular Commit Message Conventions](https://github.com/angular/angular/blob/main/contributing-docs/commit-message-guidelines.md):
+
+- Use `feat` when adding a **new** path.
+- Use `fix` when updating an **existing** path or schema.
+
+Once everything looks good, open a pull request.
+
+## Disclaimer
+
+This is an unofficial, community project and is not affiliated with or endorsed by 42/Le Réseau. It documents the public-facing behavior of the Intra API as observed; some endpoints, fields, or access rules may be incomplete, inferred, or subject to change without notice on 42's side.
+
+## License
+
+See [`LICENSE`](./LICENSE).

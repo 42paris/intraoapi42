@@ -1,0 +1,5 @@
+npmName: '@42paris/intraoapi42-client'
+npmVersion: '0.1.0'
+supportsES6: true
+withInterfaces: true
+useSingleRequestParameter: true

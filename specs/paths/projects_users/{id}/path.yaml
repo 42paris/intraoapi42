@@ -1,0 +1,69 @@
+/projects_users/{id}:
+  patch:
+    operationId: PatchProjectUserById
+    tags:
+      - Projects Users
+    summary: Update a project user
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the project user
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - projects_user
+            properties:
+              projects_user:
+                $ref: "#/components/schemas/ProjectUserUpdate"
+    responses:
+      "204":
+        description: Project user updated successfully
+      "400":
+        $ref: '#/components/responses/ErrorResponse'
+      default:
+        $ref: '#/components/responses/ErrorResponse'
+  put:
+    operationId: PutProjectUserById
+    tags:
+      - Projects Users
+    summary: Update a project user
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the project user
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - projects_user
+            properties:
+              projects_user:
+                $ref: "#/components/schemas/ProjectUserUpdate"
+          example:
+            projects_user:
+              project_id: 1
+              user_id: 1
+    responses:
+      "204":
+        description: Project user updated successfully
+      default:
+        $ref: '#/components/responses/ErrorResponse'

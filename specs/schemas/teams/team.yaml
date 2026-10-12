@@ -1,0 +1,11 @@
+Team:
+  allOf:
+    - $ref: "#/components/schemas/LightTeam"
+    - type: object
+      properties:
+        scale_teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/ScaleTeam"
+      required:
+        - scale_teams

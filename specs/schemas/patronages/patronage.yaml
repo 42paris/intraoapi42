@@ -1,0 +1,26 @@
+Patronage:
+  type: object
+  properties:
+    id:
+      type: integer
+    user_id:
+      type: integer
+    godson_id:
+      type: integer
+    godfather_id:
+      type: integer
+    ongoing:
+      type: boolean
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - ongoing
+    - created_at
+    - updated_at

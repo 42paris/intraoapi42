@@ -1,0 +1,67 @@
+Project:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    slug:
+      type: string
+    description:
+      type: string
+    exam:
+      type: boolean
+    parent:
+      $ref: "#/components/schemas/LightProject"
+    children:
+      type: array
+      items:
+        $ref: "#/components/schemas/LightProject"
+    objectives:
+      type: array
+      items:
+        type: string
+    tags:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          kind:
+            type: string
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    repository:
+      type: [string, "null"]
+      format: uri
+    difficulty:
+      type: [integer, "null"]
+    cursus:
+      type: array
+      items:
+        $ref: "#/components/schemas/Cursus"
+    project_sessions_ids:
+      type: array
+      items:
+        type: integer
+    project_statistics:
+      type: object
+      properties:
+        average_mark:
+          type: [number, "null"]
+        count:
+          type: integer
+  required:
+    - id
+    - name
+    - slug
+    - exam

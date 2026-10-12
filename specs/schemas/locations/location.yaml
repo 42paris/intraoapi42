@@ -1,0 +1,27 @@
+Location:
+  type: object
+  properties:
+    id:
+      type: integer
+    begin_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    end_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    primary:
+      type: boolean
+    host:
+      type: string
+    campus_id:
+      type: integer
+    user:
+      $ref: "#/components/schemas/UserPreview"
+  required:
+    - id
+    - begin_at
+    - primary
+    - host
+    - campus_id

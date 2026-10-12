@@ -1,0 +1,35 @@
+LightApp:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    description:
+      type: [string, "null"]
+    image:
+      type: [string, "null"]
+    website:
+      type: [string, "null"]
+    public:
+      type: boolean
+    scopes:
+      type: array
+      items:
+        type: string
+    created_at:
+      type: string
+      format: date-time
+    updated_at:
+      type: string
+      format: date-time
+    rate_limit:
+      type: integer
+  required:
+    - id
+    - name
+    - public
+    - scopes
+    - created_at
+    - updated_at
+    - rate_limit

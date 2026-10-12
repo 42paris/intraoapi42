@@ -1,0 +1,19 @@
+{# custom-templates/package_init.py.jinja #}
+
+from .client import AuthenticatedClient, Client
+
+from .custom_client import (
+    Config,
+    ProductionConfig,
+    StagingConfig,
+    NewClient,
+)
+
+__all__ = [
+    "AuthenticatedClient",
+    "Client",
+    "Config",
+    "ProductionConfig",
+    "StagingConfig",
+    "NewClient",
+]

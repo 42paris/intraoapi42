@@ -1,0 +1,21 @@
+LanguageUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    language_id:
+      type: integer
+    user_id:
+      type: integer
+    position:
+      type: integer
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - language_id
+    - user_id
+    - position
+    - created_at

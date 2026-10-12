@@ -1,0 +1,21 @@
+/teams/{id}/reset_team_uploads:
+  post:
+    operationId: PostResetTeamUploadsById
+    tags:
+      - Teams
+    summary: Reset team uploads by ID
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the team
+        schema:
+          type: string
+    responses:
+      "201":
+        description: Team Uploads as been reset
+      default:
+        $ref: '#/components/responses/ErrorResponse'

@@ -1,0 +1,25 @@
+/accreditations/{id}:
+  get:
+    operationId: getAccreditationById
+    tags:
+      - Accreditations
+    summary: Get an accreditation by ID
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the accreditation
+        schema:
+          type: string
+    responses:
+      "200":
+        description: An accreditation object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Accreditation"
+      default:
+        $ref: "#/components/responses/ErrorResponse"

@@ -1,0 +1,55 @@
+CursusUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    begin_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    end_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    grade:
+      type: string
+    level:
+      type: number
+      format: double
+    skills:
+      type: array
+      items:
+        $ref: "#/components/schemas/Skill"
+    cursus_id:
+      type: integer
+    has_coalition:
+      type: boolean
+    blackholed_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    cursus:
+      $ref: "#/components/schemas/Cursus"
+    user:
+      $ref: "#/components/schemas/LightUser"
+  required:
+    - id
+    - begin_at
+    - end_at
+    - grade
+    - level
+    - skills
+    - cursus_id
+    - cursus
+    - has_coalition
+    - blackholed_at
+    - created_at
+    - updated_at

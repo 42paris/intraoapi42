@@ -1,0 +1,26 @@
+SlotCreate:
+  type: object
+  required:
+    - slot
+  properties:
+    slot:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: Must match the token owner unless Advanced tutor
+        begin_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        end_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        scale_team_id:
+          type: [integer, "null"]
+          description: Optional defense to link to this slot
+      required:
+        - user_id
+        - begin_at
+        - end_at

@@ -7,9 +7,6 @@ Error:
     error:
       type: string
       description: Error message
-  required:
-    - status
-    - error
   example:
     status: 401
     error: "The access token is invalid"

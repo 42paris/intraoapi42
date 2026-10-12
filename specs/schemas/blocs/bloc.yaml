@@ -1,0 +1,26 @@
+Bloc:
+  type: object
+  properties:
+    id:
+      type: integer
+    campus_id:
+      type: integer
+    cursus_id:
+      type: integer
+    squad_size:
+      type: integer
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - campus_id
+    - cursus_id
+    - squad_size
+    - created_at
+    - updated_at

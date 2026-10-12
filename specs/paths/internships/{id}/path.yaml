@@ -1,0 +1,29 @@
+/internships/{id}:
+  get:
+    operationId: getInternshipById
+    tags:
+      - Internships
+    summary: 🔑 Get an internship by ID
+    security:
+      - OAuth2:
+        - public
+    x-roles-required:
+      - Companies manager
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The internship id
+        schema:
+          type: string
+    responses:
+      "200":
+        description: An internship object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Internship"
+      "400":
+        $ref: '#/components/responses/ErrorResponse'
+      default:
+        $ref: "#/components/responses/ErrorResponse"

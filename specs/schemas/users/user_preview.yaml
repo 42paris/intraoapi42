@@ -1,0 +1,17 @@
+UserPreview:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: The unique identifier of the user.
+    login:
+      type: string
+      description: The login name of the user.
+    url:
+      type: string
+      format: uri
+      description: The URL to the user's resource.
+  required:
+    - id
+    - login
+    - url

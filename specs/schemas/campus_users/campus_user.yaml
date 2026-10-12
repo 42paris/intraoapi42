@@ -1,0 +1,26 @@
+CampusUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    user_id:
+      type: integer
+    campus_id:
+      type: integer
+    is_primary:
+      type: boolean
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - user_id
+    - campus_id
+    - is_primary
+    - created_at
+    - updated_at

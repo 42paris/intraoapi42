@@ -1,0 +1,39 @@
+/internships:
+  get:
+    operationId: getInternships
+    tags:
+      - Internships
+    summary: 🔑 Get a list of internships
+    security:
+      - OAuth2:
+        - public
+    x-roles-required:
+      - Companies manager
+    parameters:
+      - $ref: "#/components/parameters/base_sort"
+        description: |
+          The sort field. Sorted by created_at desc, id desc by default.
+          Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id.
+      - $ref: "#/components/parameters/base_filter"
+        description: |
+          Filtering on one or more fields. Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id, start, end, breach.
+      - $ref: "#/components/parameters/base_range"
+        description: |
+          Select on a particular range. Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id.
+      - $ref: "#/components/parameters/page"
+      - $ref: "#/components/parameters/per_page"
+      - $ref: "#/components/parameters/page_number"
+      - $ref: "#/components/parameters/page_size"
+    responses:
+      "200":
+        description: A list of internships
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Internship"
+      "400":
+        $ref: '#/components/responses/ErrorResponse'
+      default:
+        $ref: "#/components/responses/ErrorResponse"

@@ -1,0 +1,100 @@
+UserCandidature:
+  type: object
+  properties:
+    id:
+      type: integer
+    user_id:
+      type: integer
+    birth_date:
+      type: string
+      format: date
+    gender:
+      type: [string, "null"]
+      enum:
+        - male
+        - female
+        - other
+    zip_code:
+      type: [string, "null"]
+    country:
+      type: [string, "null"]
+    birth_city:
+      type: string
+    birth_country:
+      type: [string, "null"]
+    postal_street:
+      type: string
+    postal_complement:
+      type: [string, "null"]
+    postal_city:
+      type: string
+    postal_zip_code:
+      type: string
+    postal_country:
+      type: string
+    contact_affiliation:
+      type: string
+    contact_last_name:
+      type: string
+    contact_first_name:
+      type: string
+    contact_phone1:
+      type: string
+    contact_phone2:
+      type: [string, "null"]
+    max_level_memory:
+      type: [number, "null"]
+      format: double
+    max_level_logic:
+      type: [number, "null"]
+      format: double
+    other_information:
+      type: [string, "null"]
+    language:
+      type: string
+    meeting_date:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    piscine_date:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    phone:
+      type: string
+    email:
+      type: string
+    pin:
+      type: string
+    phone_country_code:
+      type: string
+    hidden_phone:
+      type: boolean
+  required:
+    - id
+    - user_id
+    - birth_city
+    - postal_street
+    - postal_city
+    - postal_zip_code
+    - postal_country
+    - contact_affiliation
+    - contact_last_name
+    - contact_first_name
+    - contact_phone1
+    - language
+    - created_at
+    - updated_at
+    - phone
+    - email
+    - pin
+    - phone_country_code
+    - hidden_phone

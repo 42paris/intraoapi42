@@ -1,0 +1,24 @@
+Expertise:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    slug:
+      type: string
+    kind:
+      type: string
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - name
+    - slug
+    - kind

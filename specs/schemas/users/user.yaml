@@ -1,0 +1,66 @@
+User:
+  allOf:
+    - $ref: "#/components/schemas/LightUser"
+    - type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: "#/components/schemas/Group"
+        cursus_users:
+          type: array
+          items:
+            $ref: "#/components/schemas/CursusUser"
+        projects_users:
+          type: array
+          items:
+            $ref: "#/components/schemas/LightProjectUser"
+        languages_users:
+          type: array
+          items:
+            $ref: "#/components/schemas/LanguageUser"
+        achievements:
+          type: array
+          items:
+            $ref: "#/components/schemas/Achievement"
+        titles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Title"
+        titles_users:
+          type: array
+          items:
+            $ref: "#/components/schemas/TitleUser"
+        patroned:
+          type: array
+          items:
+            $ref: "#/components/schemas/Patronage"
+        patroning:
+          type: array
+          items:
+            $ref: "#/components/schemas/Patronage"
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
+        campus:
+          type: array
+          items:
+            $ref: "#/components/schemas/Campus"
+        campus_users:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampusUser"
+      required:
+        - groups
+        - cursus_users
+        - projects_users
+        - languages_users
+        - achievements
+        - titles
+        - titles_users
+        - patroned
+        - patroning
+        - roles
+        - campus
+        - campus_users

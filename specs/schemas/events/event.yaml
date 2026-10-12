@@ -1,0 +1,61 @@
+Event:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    description:
+      type: string
+    location:
+      type: [string, "null"]
+    kind:
+      type: string
+    max_people:
+      type: [integer, "null"]
+    nbr_subscribers:
+      type: integer
+    begin_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    end_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    campus_ids:
+      type: array
+      items:
+        type: integer
+    cursus_ids:
+      type: array
+      items:
+        type: integer
+    themes:
+      type: array
+      items:
+        type: object
+    waitlist:
+      type: [object, "null"]
+    difficulty:
+      type: [integer, "null"]
+    prohibition_of_cancellation:
+      type: [integer, "null"]
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - name
+    - description
+    - kind
+    - nbr_subscribers
+    - begin_at
+    - end_at
+    - campus_ids
+    - cursus_ids

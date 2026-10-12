@@ -1,0 +1,33 @@
+LightCommunityService:
+  type: object
+  properties:
+    id:
+      type: integer
+    duration:
+      type: integer
+    schedule_at:
+      type: string
+      format: date-time
+    occupation:
+      type: string
+    state:
+      type: string
+      enum:
+        - invalidated
+        - beginning
+        - schedule
+        - validated
+    created_at:
+      type: string
+      format: date-time
+    updated_at:
+      type: string
+      format: date-time
+  required:
+    - id
+    - duration
+    - schedule_at
+    - occupation
+    - state
+    - created_at
+    - updated_at

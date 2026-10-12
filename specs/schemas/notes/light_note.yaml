@@ -1,0 +1,51 @@
+LightNote:
+  type: object
+  description: A comment or note left by one user about another (e.g. a scale/feedback note).
+  properties:
+    id:
+      type: integer
+      description: The unique identifier of this note.
+    from_user:
+      allOf:
+        - $ref: '#/components/schemas/LightNoteUser'
+      description: The user who wrote the note.
+    subject:
+      type: string
+      description: The subject or title of the note.
+    content:
+      type: string
+      description: The body content of the note.
+    created_at:
+      type: string
+      format: date-time
+      description: The timestamp when the note was created.
+    user:
+      allOf:
+        - $ref: '#/components/schemas/LightNoteUser'
+      description: The user the note is about.
+  required:
+    - id
+    - from_user
+    - subject
+    - content
+    - created_at
+    - user
+
+LightNoteUser:
+  type: object
+  description: A minimal reference to a user.
+  properties:
+    id:
+      type: integer
+      description: The user's unique identifier.
+    login:
+      type: string
+      description: The user's login.
+    url:
+      type: string
+      format: uri
+      description: The URL of the user's resource.
+  required:
+    - id
+    - login
+    - url

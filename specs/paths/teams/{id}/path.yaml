@@ -1,0 +1,87 @@
+/teams/{id}:
+  get:
+    operationId: getTeamById
+    tags:
+      - Teams
+    summary: Get a team by ID
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the team
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: A team object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Team"
+      default:
+        $ref: "#/components/responses/ErrorResponse"
+  patch:
+    operationId: PatchTeamById
+    tags:
+      - Teams
+    summary: Patch a team by ID
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the team
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - team
+            properties:
+              team:
+                $ref: "#/components/schemas/TeamUpdate"
+    responses:
+      "204":
+        description: Team has been patched
+      default:
+        $ref: '#/components/responses/ErrorResponse'
+  put:
+    operationId: PutTeamById
+    tags:
+      - Teams
+    summary: Update a team by ID
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the team
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - team
+            properties:
+              team:
+                $ref: "#/components/schemas/TeamUpdate"
+    responses:
+      "204":
+        description: Team has been updated
+      default:
+        $ref: '#/components/responses/ErrorResponse'

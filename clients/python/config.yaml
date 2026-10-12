@@ -1,0 +1,8 @@
+project_name_override: intraoapi42
+package_name_override: intraoapi42
+field_prefix: field_
+generate_all_tags: false
+literal_enums: true
+post_hooks:
+    - 'ruff check . --fix'
+    - 'ruff format .'

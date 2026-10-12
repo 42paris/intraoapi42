@@ -1,0 +1,31 @@
+ExpertisesUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    expertise_id:
+      type: integer
+    user_id:
+      type: integer
+    interested:
+      type: boolean
+    value:
+      type: [integer, "null"]
+    contact_me:
+      type: boolean
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    expertise:
+      $ref: "#/components/schemas/Expertise"
+  required:
+    - id
+    - expertise_id
+    - user_id
+    - interested
+    - contact_me

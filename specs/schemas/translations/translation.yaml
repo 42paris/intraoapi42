@@ -1,0 +1,35 @@
+Translation:
+  type: object
+  properties:
+    id:
+      type: integer
+    translatable_id:
+      type: integer
+    translatable_type:
+      type: string
+    language_id:
+      type: integer
+    fields:
+      type: object
+      additionalProperties:
+        type: string
+    up_to_date:
+      type: boolean
+    default:
+      type: boolean
+    user_id:
+      type: [integer, "null"]
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - translatable_id
+    - translatable_type
+    - language_id
+    - fields

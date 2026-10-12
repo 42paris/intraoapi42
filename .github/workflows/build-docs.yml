@@ -1,0 +1,57 @@
+name: Build and release Docs
+
+on:
+  push:
+    tags:
+      - 'openapi/v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: read
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Resolve OpenAPI version
+        id: version
+        run: |
+          VERSION="${GITHUB_REF_NAME#openapi/v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Stamp OpenAPI version for docs
+        run: |
+          npm ci
+          node tool/write-api-version.cjs ${{ steps.version.outputs.version }}
+
+      - name: Prepare static site
+        run: |
+          mkdir -p _site
+          cp docs/index.html _site/index.html
+          cp docs/scalar-required-roles-plugin.js _site/scalar-required-roles-plugin.js
+          cp openapi/openapi.yaml _site/openapi.yaml
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy-docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build-docs
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,38 @@
+/accreditations:
+  get:
+    operationId: getAccreditations
+    tags:
+        - Accreditations
+    summary: Get a list of Accreditations
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - $ref: "#/components/parameters/base_sort"
+        description: |
+          The sort field. Sorted by created_at desc, id desc by default.
+          Must be one of: id, name, user_id, cursus_id, difficulty, validated, created_at, updated_at.
+      - $ref: "#/components/parameters/base_filter"
+        description: |
+          Filtering on one or more fields. Must be one of: id, name, user_id, cursus_id, difficulty, validated, created_at, updated_at.
+      - $ref: "#/components/parameters/base_range"
+        description: |
+          Select on a particular range. Must be one of: id, name, user_id, cursus_id, difficulty, validated, created_at, updated_at.
+      - $ref: "#/components/parameters/page"
+      - $ref: "#/components/parameters/per_page"
+      - $ref: "#/components/parameters/page_number"
+      - $ref: "#/components/parameters/page_size"
+    responses:
+      "200":
+        description: A list of Accreditations
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Accreditation"
+      "400":
+        $ref: '#/components/responses/ErrorResponse'
+      default:
+        $ref: "#/components/responses/ErrorResponse"
+

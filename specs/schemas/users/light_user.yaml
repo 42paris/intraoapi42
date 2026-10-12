@@ -1,0 +1,147 @@
+LightUser:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: The unique identifier of the user.
+    login:
+      type: string
+      description: The login name of the user.
+    first_name:
+      type: string
+      description: The first name of the user.
+    usual_first_name:
+      type: [string, "null"]
+      description: The usual first name of the user, first_name if none.
+    usual_full_name:
+      type: string
+      description: The usual full name of the user, usually usual_first_name or first_name + last_name.
+    last_name:
+      type: string
+      description: The last name of the user.
+    email:
+      type: string
+      description: The email address of the user.
+      format: email
+    phone:
+      type: string
+      description: The phone number of the user (always hidden).
+    displayname:
+      type: string
+      description: The display name of the user.
+    kind:
+      type: string
+      description: The kind of user (e.g., student, admin, external).
+      enum:
+        - student
+        - admin
+        - external
+    image:
+      $ref: "#/components/schemas/UserImage"
+    staff?:
+      type: boolean
+      description: Indicates if the user is staff.
+    correction_point:
+      type: integer
+      description: The user's correction points.
+    pool_month:
+      type: string
+      description: The month of the user's pool.
+    pool_year:
+      type: string
+      description: The year of the user's pool.
+    location:
+      type: [string, "null"]
+      description: The location of the user.
+    wallet:
+      type: integer
+      description: The user's wallet balance.
+    anonymize_date:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+      description: The date when user data will be anonymized.
+    data_erasure_date:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+      description: The date when user data will be erased.
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+      description: The user creation timestamp.
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+      description: The last user update timestamp.
+    alumnized_at:
+      description: The date when the user became an alumnus.
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    alumni?:
+      type: boolean
+      description: Indicates if the user is an alumnus.
+    active?:
+      type: boolean
+      description: Indicates if the user is active.
+
+  required:
+    - id
+    - login
+    - first_name
+    - last_name
+    - usual_full_name
+    - email
+    - displayname
+    - kind
+    - image
+    - staff?
+    - correction_point
+    - pool_month
+    - pool_year
+    - wallet
+    - anonymize_date
+    - data_erasure_date
+    - created_at
+    - updated_at
+    - alumnized_at
+    - alumni?
+    - active?
+
+UserImage:
+  type: object
+  properties:
+    link:
+      type: string
+      format: uri
+      description: The URL to the user's image.
+    versions:
+      type: object
+      properties:
+        large:
+          type: string
+          format: uri
+          description: URL to the large version of the user's image.
+        medium:
+          type: string
+          format: uri
+          description: URL to the medium version of the user's image.
+        small:
+          type: string
+          format: uri
+          description: URL to the small version of the user's image.
+        micro:
+          type: string
+          format: uri
+          description: URL to the micro version of the user's image.
+      required:
+        - large
+        - medium
+        - small
+        - micro
+  required:
+    - link
+    - versions

@@ -1,0 +1,55 @@
+LightCampus:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    time_zone:
+      type: string
+    users_count:
+      type: integer
+    vogsphere_id:
+      type: integer
+    country:
+      type: string
+    address:
+      type: string
+    zip:
+      type: string
+    city:
+      type: string
+    website:
+      type: string
+      format: uri
+    facebook:
+      type: string
+      format: uri
+    twitter:
+      type: string
+      format: uri
+    active:
+      type: boolean
+    public:
+      type: boolean
+    email_extension:
+      type: string
+    default_hidden_phone:
+      type: boolean
+  required:
+    - id
+    - name
+    - time_zone
+    - users_count
+    - vogsphere_id
+    - country
+    - address
+    - zip
+    - city
+    - website
+    - facebook
+    - twitter
+    - active
+    - public
+    - email_extension
+    - default_hidden_phone

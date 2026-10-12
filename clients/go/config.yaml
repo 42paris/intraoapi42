@@ -1,0 +1,7 @@
+package: intraoapi42
+
+generate:
+    models: true
+    client: true
+
+output: openapi.gen.go

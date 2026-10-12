@@ -1,0 +1,26 @@
+LightTeamUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    login:
+      type: string
+    url:
+      type: string
+      format: uri
+    leader:
+      type: boolean
+    occurrence:
+      type: integer
+    validated:
+      type: boolean
+    projects_user_id:
+      type: integer
+  required:
+    - id
+    - login
+    - url
+    - leader
+    - occurrence
+    - validated
+    - projects_user_id

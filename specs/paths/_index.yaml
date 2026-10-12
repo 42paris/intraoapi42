@@ -1,16 +1,72 @@
+/accreditations:
+  $ref: accreditations/path.yaml#/~1accreditations
+/accreditations/{accreditation_id}/users:
+  $ref: accreditations/{accreditation_id}/users/path.yaml#/~1accreditations~1{accreditation_id}~1users
+/accreditations/{id}:
+  $ref: accreditations/{id}/path.yaml#/~1accreditations~1{id}
+/achievements/{achievement_id}/users:
+  $ref: achievements/{achievement_id}/users/path.yaml#/~1achievements~1{achievement_id}~1users
+/campus/{campus_id}/users:
+  $ref: campus/{campus_id}/users/path.yaml#/~1campus~1{campus_id}~1users
 /closes:
-  $ref: ./closes.yaml#/~1closes
+  $ref: closes/path.yaml#/~1closes
 /closes/{id}:
-  $ref: ./closes.yaml#/~1closes~1{id}
+  $ref: closes/{id}/path.yaml#/~1closes~1{id}
+/coalitions/{coalition_id}/users:
+  $ref: coalitions/{coalition_id}/users/path.yaml#/~1coalitions~1{coalition_id}~1users
+/cursus/{cursus_id}/users:
+  $ref: cursus/{cursus_id}/users/path.yaml#/~1cursus~1{cursus_id}~1users
+/expertises/{expertise_id}/users:
+  $ref: expertises/{expertise_id}/users/path.yaml#/~1expertises~1{expertise_id}~1users
 /internships:
-  $ref: ./internships.yaml#/~1internships
+  $ref: internships/path.yaml#/~1internships
+/internships/{id}:
+  $ref: internships/{id}/path.yaml#/~1internships~1{id}
 /languages/{id}:
-  $ref: ./languages.yaml#/~1languages~1{id}
+  $ref: languages/{id}/path.yaml#/~1languages~1{id}
+/me/teams:
+  $ref: me/teams/path.yaml#/~1me~1teams
+/partnerships/{partnership_id}/users:
+  $ref: partnerships/{partnership_id}/users/path.yaml#/~1partnerships~1{partnership_id}~1users
+/project_sessions/{project_session_id}/teams:
+  $ref: project_sessions/{project_session_id}/teams/path.yaml#/~1project_sessions~1{project_session_id}~1teams
+/projects/{project_id}/projects_users:
+  $ref: projects/{project_id}/projects_users/path.yaml#/~1projects~1{project_id}~1projects_users
+/projects/{project_id}/teams:
+  $ref: projects/{project_id}/teams/path.yaml#/~1projects~1{project_id}~1teams
+/projects/{project_id}/users:
+  $ref: projects/{project_id}/users/path.yaml#/~1projects~1{project_id}~1users
+/projects_users:
+  $ref: projects_users/path.yaml#/~1projects_users
+/projects_users/{id}:
+  $ref: projects_users/{id}/path.yaml#/~1projects_users~1{id}
+/quests/{quest_id}/users:
+  $ref: quests/{quest_id}/users/path.yaml#/~1quests~1{quest_id}~1users
+/teams:
+  $ref: teams/path.yaml#/~1teams
+/teams/{id}:
+  $ref: teams/{id}/path.yaml#/~1teams~1{id}
+/teams/{id}/reset_team_uploads:
+  $ref: teams/{id}/reset_team_uploads/path.yaml#/~1teams~1{id}~1reset_team_uploads
+/titles/{title_id}/users:
+  $ref: titles/{title_id}/users/path.yaml#/~1titles~1{title_id}~1users
 /users:
-  $ref: ./users.yaml#/~1users
+  $ref: users/path.yaml#/~1users
 /users/{id}:
-  $ref: ./users.yaml#/~1users~1{id}
+  $ref: users/{id}/path.yaml#/~1users~1{id}
 /users/{id}/user_candidature:
-  $ref: ./user_candidatures.yaml#/~1users~1{id}~1user_candidature
+  $ref: users/{id}/user_candidature/path.yaml#/~1users~1{id}~1user_candidature
 /users/{user_id}/closes:
-  $ref: ./closes.yaml#/~1users~1{user_id}~1closes
+  $ref: users/{user_id}/closes/path.yaml#/~1users~1{user_id}~1closes
+/users/{user_id}/internships:
+  $ref: users/{user_id}/internships/path.yaml#/~1users~1{user_id}~1internships
+/users/{user_id}/internships/{id}:
+  $ref: users/{user_id}/internships/{id}/path.yaml#/~1users~1{user_id}~1internships~1{id}
+/users/{user_id}/notes:
+  $ref: users/{user_id}/notes/path.yaml#/~1users~1{user_id}~1notes
+/users/{user_id}/projects/{project_id}/teams:
+  $ref: users/{user_id}/projects/{project_id}/teams/path.yaml#/~1users~1{user_id}~1projects~1{project_id}~1teams
+/users/{user_id}/projects_users:
+  $ref: users/{user_id}/projects_users/path.yaml#/~1users~1{user_id}~1projects_users
+/users/{user_id}/teams:
+  $ref: users/{user_id}/teams/path.yaml#/~1users~1{user_id}~1teams

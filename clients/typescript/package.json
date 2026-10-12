@@ -1,0 +1,46 @@
+{
+  "name": "@42paris/intraoapi42",
+  "version": "1.0.0",
+  "description": "Typed API client for the 42 Intra API",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "generate:api": "openapi-typescript openapi.yaml --output ./src/types.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "release": "semantic-release",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "42paris",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com:42paris/intraoapi42.git"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.17.0"
+  },
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/github": "^12.0.9",
+    "@semantic-release/npm": "^13.1.5",
+    "@semantic-release/release-notes-generator": "^14.1.1",
+    "openapi-typescript": "^7.13.0",
+    "semantic-release": "^25.0.9",
+    "tsx": "^4.23.12",
+    "typescript": "^5.9.2"
+  }
+}

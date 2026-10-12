@@ -1,0 +1,14 @@
+ProjectUser:
+  allOf:
+    - $ref: "#/components/schemas/LightProjectUser"
+    - type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/LightUser"
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/LightTeam"
+      required:
+        - user
+        - teams

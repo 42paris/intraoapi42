@@ -1,0 +1,14 @@
+Skill:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    level:
+      type: number
+      format: double
+  required:
+    - id
+    - name
+    - level

@@ -1,0 +1,19 @@
+Close:
+  allOf:
+    - $ref: '#/components/schemas/LightClose'
+      type: object
+      properties:
+        user:
+          allOf:
+            - $ref: '#/components/schemas/UserPreview'
+        closer:
+          allOf:
+            - $ref: '#/components/schemas/UserPreview'
+        community_services:
+          type: array
+          items:
+            $ref: "#/components/schemas/LightCommunityService"
+      required:
+        - user
+        - closer
+        - community_services

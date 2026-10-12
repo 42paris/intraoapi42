@@ -1,0 +1,29 @@
+CoalitionsUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    coalition_id:
+      type: integer
+    user_id:
+      type: integer
+    score:
+      type: integer
+    rank:
+      type: integer
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - coalition_id
+    - user_id
+    - score
+    - rank
+    - created_at
+    - updated_at

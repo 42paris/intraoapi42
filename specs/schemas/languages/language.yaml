@@ -1,0 +1,23 @@
+Language:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    identifier:
+      type: string
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - name
+    - identifier
+    - created_at
+    - updated_at

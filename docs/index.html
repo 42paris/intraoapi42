@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Intra API Documentation</title>
+	</head>
+
+	<body>
+		<div id="app"></div>
+
+		<script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+		<script>
+			Scalar.createApiReference('#app', {
+				url: './openapi.yaml',
+				pluginUrls: [
+					new URL('./scalar-required-roles-plugin.js', window.location.href).href,
+				],
+				proxyUrl: 'https://proxy.scalar.com',
+			});
+		</script>
+	</body>
+</html>

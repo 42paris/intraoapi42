@@ -1,0 +1,46 @@
+LightClose:
+  type: object
+  properties:
+    id:
+      type: integer
+    reason:
+      type: string
+    state:
+      type: string
+      enum:
+        - close
+        - unclose
+    kind:
+      type: string
+      enum:
+        - agu
+        - other
+        - deserter
+        - pace_unknown
+        - black_hole
+        - serious_misconduct
+        - social_security
+        - non_admitted
+    end_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    primary_campus_id:
+      type: integer
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - reason
+    - state
+    - kind
+    - end_at
+    - primary_campus_id
+    - created_at
+    - updated_at

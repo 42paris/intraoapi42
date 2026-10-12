@@ -1,0 +1,19 @@
+Accreditation:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    user_id:
+      type: integer
+    cursus_id:
+      type: integer
+    validated:
+      type: boolean
+  required:
+    - id
+    - name
+    - user_id
+    - cursus_id
+    - validated

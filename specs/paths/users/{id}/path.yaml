@@ -1,0 +1,25 @@
+/users/{id}:
+  get:
+    operationId: getUserById
+    tags:
+      - Users
+    summary: Get a user by ID
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID or Login of the user
+        schema:
+          type: string
+    responses:
+      "200":
+        description: A user object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      default:
+        $ref: "#/components/responses/ErrorResponse"

@@ -1,0 +1,49 @@
+base_sort:
+  name: sort
+  in: query
+  description: |
+    The sort field. Sorted by id desc by default.
+  required: false
+  schema:
+    type: string
+  examples:
+    default:
+      summary: Default sort
+      description: Sort by created_at descending, then updated_at ascending.
+      value: "-created_at,updated_at"
+base_filter:
+  name: filter
+  in: query
+  description: |
+    Filtering on one or more fields.
+  required: false
+  schema:
+    type: object
+    additionalProperties:
+      type: string
+  style: deepObject
+  explode: true
+  examples:
+    byId:
+      summary: Filter by ID
+      description: Match records whose id is one of the given values.
+      value:
+        id: "a_value,another_value"
+base_range:
+  name: range
+  in: query
+  description: |
+    Select on a particular range.
+  required: false
+  schema:
+    type: object
+    additionalProperties:
+      type: string
+  style: deepObject
+  explode: true
+  examples:
+    updatedAtRange:
+      summary: Range on updated_at
+      description: Match records updated between min_value and max_value.
+      value:
+        updated_at: "min_value,max_value"

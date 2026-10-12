@@ -1,0 +1,16 @@
+LightProject:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    slug:
+      type: string
+    parent_id:
+      type: [integer, "null"]
+  required:
+    - id
+    - name
+    - slug
+    - parent_id

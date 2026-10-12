@@ -1,0 +1,75 @@
+LightTeam:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    url:
+      type: string
+      format: uri
+    final_mark:
+      type: [integer, "null"]
+    project_id:
+      type: integer
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    status:
+      type: string
+    terminating_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    users:
+      type: array
+      items:
+        $ref: "#/components/schemas/LightTeamUser"
+    locked?:
+      type: boolean
+    validated?:
+      type: boolean
+    closed?:
+      type: boolean
+    repo_url:
+      type: [string, "null"]
+    repo_uuid:
+      type: string
+    locked_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    closed_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    project_session_id:
+      type: integer
+    project_gitlab_path:
+      type: [string, "null"]
+  required:
+    - id
+    - name
+    - url
+    - project_id
+    - created_at
+    - updated_at
+    - status
+    - terminating_at
+    - users
+    - locked?
+    - validated?
+    - closed?
+    - repo_url
+    - repo_uuid
+    - locked_at
+    - closed_at
+    - project_session_id
+    - project_gitlab_path
+
+

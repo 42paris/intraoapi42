@@ -1,0 +1,31 @@
+Achievement:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    description:
+      type: string
+    tier:
+      type: string
+    kind:
+      type: string
+    visible:
+      type: boolean
+    image:
+      type: string
+    nbr_of_success:
+      type: [integer, "null"]
+    users_url:
+      type: string
+      format: uri
+  required:
+    - id
+    - name
+    - description
+    - tier
+    - kind
+    - visible
+    - image
+    - users_url

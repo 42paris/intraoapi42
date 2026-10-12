@@ -1,0 +1,41 @@
+/languages/{id}:
+  get:
+    operationId: getLanguageById
+    tags:
+        - Languages
+    summary: Get a language by ID
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the language
+        schema:
+          type: integer
+      - $ref: "#/components/parameters/base_sort"
+        description: |
+          The sort field. Sorted by id desc by default.
+          Must be one of: id, name, identifierm created_at, updated_at
+      - $ref: "#/components/parameters/base_filter"
+        description: |
+          Filtering on one or more fields.
+          Must be one of: id, name, identifierm created_at, updated_at
+      - $ref: "#/components/parameters/base_range"
+        description: |
+          Select on a particular range.
+          Must be one of: id, name, identifierm created_at, updated_at
+      - $ref: "#/components/parameters/page"
+      - $ref: "#/components/parameters/per_page"
+      - $ref: "#/components/parameters/page_number"
+      - $ref: "#/components/parameters/page_size"
+    responses:
+      "200":
+        description: A language object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Language"
+      default:
+        $ref: "#/components/responses/ErrorResponse"

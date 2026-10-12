@@ -1,0 +1,4101 @@
+openapi: 3.1.2
+info:
+  title: Intra 42 API
+  description: |
+    OpenAPI specification for the Intra 42 API v2.
+
+    ## Legend
+
+    - 🔑 — Restricted call. Requires an elevated staff role and/or an application scope beyond `public`.
+    - 👤 — Restricted to the authenticated resource owner. Only accessible with a token belonging to the user whose data is being accessed.
+
+    Some fields within an otherwise accessible response may also be conditionally restricted; these are flagged individually in the field's description rather than in the operation summary.
+  version: 1.0.0
+servers:
+  - url: https://api.intra.42.fr/v2
+    description: Production
+  - url: https://api.intra-staging.42.fr/v2
+    description: Staging
+paths:
+  /accreditations:
+    get:
+      operationId: getAccreditations
+      tags:
+        - Accreditations
+      summary: Get a list of Accreditations
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by created_at desc, id desc by default.
+            Must be one of: id, name, user_id, cursus_id, difficulty, validated, created_at, updated_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields. Must be one of: id, name, user_id, cursus_id, difficulty, validated, created_at, updated_at.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range. Must be one of: id, name, user_id, cursus_id, difficulty, validated, created_at, updated_at.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of Accreditations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Accreditation'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /accreditations/{accreditation_id}/users:
+    get:
+      operationId: getUsersByAccreditationId
+      tags:
+        - Users
+      summary: Get a list of users by accreditation
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: accreditation_id
+          in: path
+          required: true
+          description: The ID of the accreditation
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /accreditations/{id}:
+    get:
+      operationId: getAccreditationById
+      tags:
+        - Accreditations
+      summary: Get an accreditation by ID
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the accreditation
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An accreditation object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accreditation'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /achievements/{achievement_id}/users:
+    get:
+      operationId: getUsersByAchievement
+      tags:
+        - Users
+      summary: Get a list of users by achievement
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: achievement_id
+          in: path
+          required: true
+          description: The ID of the achievement
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /campus/{campus_id}/users:
+    get:
+      operationId: getUsersByCampus
+      tags:
+        - Users
+      summary: Get a list of users by campus
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: campus_id
+          in: path
+          required: true
+          description: The ID of the campus
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /closes:
+    get:
+      operationId: getCloses
+      tags:
+        - Closes
+      summary: 🔑 Get a list of closes
+      x-roles-required:
+        - Basic Staff
+      security:
+        - OAuth2:
+            - public
+            - tig
+      parameters:
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by created_at desc, id desc by default.
+            Must be one of: id, user_id, closer_id, reason, state, created_at, updated_at, kind, end_at, jid.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields. Must be one of: id, user_id, closer_id, reason, state, created_at, updated_at, kind, end_at, jid, campus_id, end.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range. Must be one of: id, user_id, closer_id, reason, state, created_at, updated_at, kind, end_at, jid.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of closes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Close'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /closes/{id}:
+    get:
+      operationId: getCloseById
+      tags:
+        - Closes
+      summary: 🔑 Get a close by ID
+      x-roles-required:
+        - Basic Staff
+      security:
+        - OAuth2:
+            - public
+            - tig
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the close
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A close object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Close'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /coalitions/{coalition_id}/users:
+    get:
+      operationId: getUsersByCoalitionId
+      tags:
+        - Users
+      summary: Get a list of users by coalition
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: coalition_id
+          in: path
+          required: true
+          description: The ID of the coalition
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /cursus/{cursus_id}/users:
+    get:
+      operationId: getUsersByCursus
+      tags:
+        - Users
+      summary: Get a list of users by cursus
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: cursus_id
+          in: path
+          required: true
+          description: The ID of the cursus
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /expertises/{expertise_id}/users:
+    get:
+      operationId: getUsersByExpertiseId
+      tags:
+        - Users
+      summary: Get a list of users by expertise
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: expertise_id
+          in: path
+          required: true
+          description: The ID of the expertise
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /internships:
+    get:
+      operationId: getInternships
+      tags:
+        - Internships
+      summary: 🔑 Get a list of internships
+      security:
+        - OAuth2:
+            - public
+      x-roles-required:
+        - Companies manager
+      parameters:
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by created_at desc, id desc by default.
+            Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields. Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id, start, end, breach.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range. Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of internships
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Internship'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /internships/{id}:
+    get:
+      operationId: getInternshipById
+      tags:
+        - Internships
+      summary: 🔑 Get an internship by ID
+      security:
+        - OAuth2:
+            - public
+      x-roles-required:
+        - Companies manager
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The internship id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An internship object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Internship'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /languages/{id}:
+    get:
+      operationId: getLanguageById
+      tags:
+        - Languages
+      summary: Get a language by ID
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the language
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, name, identifierm created_at, updated_at
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, name, identifierm created_at, updated_at
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, name, identifierm created_at, updated_at
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A language object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Language'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /me/teams:
+    get:
+      operationId: GetTeamsByMe
+      tags:
+        - Teams
+      summary: Get a list of teams by me
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id asc by default.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status, cursus, active_cursus, campus, primary_campus, locked, closed, deadline, terminating, with_mark.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of teams
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightTeam'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /partnerships/{partnership_id}/users:
+    get:
+      operationId: getUsersByPartnershipId
+      tags:
+        - Users
+      summary: Get a list of users by partnership
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: partnership_id
+          in: path
+          required: true
+          description: The ID of the partnership
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /project_sessions/{project_session_id}/teams:
+    get:
+      operationId: GetTeamsByProjectSessionId
+      tags:
+        - Teams
+      summary: Get a list of teams by a project session Id
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: project_session_id
+          in: path
+          required: true
+          description: The ID of the project session
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id asc by default.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status, cursus, active_cursus, campus, primary_campus, locked, closed, deadline, terminating, with_mark.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of teams
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightTeam'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /projects/{project_id}/projects_users:
+    get:
+      operationId: getProjectsUsersByProjectId
+      tags:
+        - Projects Users
+      summary: Get a list of projects users by a project Id
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          description: The ID of the project
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields. Must be one of: id, project_id, user_id, created_at, updated_at, occurrence, final_mark, retriable_at, marked_at, status, cursus, campus, retriable, marked.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range. Must be one of: id, project_id, user_id, created_at, updated_at, occurrence, final_mark, retriable_at, marked_at, status.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of projects users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /projects/{project_id}/teams:
+    get:
+      operationId: GetTeamsByProjectId
+      tags:
+        - Teams
+      summary: Get a list of teams by a project Id
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          description: The ID of the project
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id asc by default.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status, cursus, active_cursus, campus, primary_campus, locked, closed, deadline, terminating, with_mark.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of teams
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightTeam'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /projects/{project_id}/users:
+    get:
+      operationId: getUsersByProjectId
+      tags:
+        - Users
+      summary: Get a list of users by project
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          description: The ID of the project
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /projects_users:
+    get:
+      operationId: getProjectsUsers
+      tags:
+        - Projects Users
+      summary: Get a list of projects users
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields. Must be one of: id, project_id, user_id, created_at, updated_at, occurrence, final_mark, retriable_at, marked_at, status, cursus, campus, retriable, marked.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range. Must be one of: id, project_id, user_id, created_at, updated_at, occurrence, final_mark, retriable_at, marked_at, status.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of projects users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: PostProjectsUsers
+      tags:
+        - Projects Users
+      summary: Create a project user
+      security:
+        - OAuth2:
+            - public
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - projects_user
+              properties:
+                projects_user:
+                  $ref: '#/components/schemas/ProjectUserCreate'
+      responses:
+        '201':
+          description: Project user created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectUser'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /projects_users/{id}:
+    patch:
+      operationId: PatchProjectUserById
+      tags:
+        - Projects Users
+      summary: Update a project user
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the project user
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - projects_user
+              properties:
+                projects_user:
+                  $ref: '#/components/schemas/ProjectUserUpdate'
+      responses:
+        '204':
+          description: Project user updated successfully
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    put:
+      operationId: PutProjectUserById
+      tags:
+        - Projects Users
+      summary: Update a project user
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the project user
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - projects_user
+              properties:
+                projects_user:
+                  $ref: '#/components/schemas/ProjectUserUpdate'
+            example:
+              projects_user:
+                project_id: 1
+                user_id: 1
+      responses:
+        '204':
+          description: Project user updated successfully
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /quests/{quest_id}/users:
+    get:
+      operationId: getUsersByQuest
+      tags:
+        - Users
+      summary: Get a list of users by quest
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: quest_id
+          in: path
+          required: true
+          description: The ID of the quest
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /teams:
+    get:
+      operationId: GetTeams
+      tags:
+        - Teams
+      summary: Get a list of teams
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id asc by default.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status, cursus, active_cursus, campus, primary_campus, locked, closed, deadline, terminating, with_mark.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of teams
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightTeam'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /teams/{id}:
+    get:
+      operationId: getTeamById
+      tags:
+        - Teams
+      summary: Get a team by ID
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the team
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A team object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    patch:
+      operationId: PatchTeamById
+      tags:
+        - Teams
+      summary: Patch a team by ID
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the team
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - team
+              properties:
+                team:
+                  $ref: '#/components/schemas/TeamUpdate'
+      responses:
+        '204':
+          description: Team has been patched
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    put:
+      operationId: PutTeamById
+      tags:
+        - Teams
+      summary: Update a team by ID
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the team
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - team
+              properties:
+                team:
+                  $ref: '#/components/schemas/TeamUpdate'
+      responses:
+        '204':
+          description: Team has been updated
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /teams/{id}/reset_team_uploads:
+    post:
+      operationId: PostResetTeamUploadsById
+      tags:
+        - Teams
+      summary: Reset team uploads by ID
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the team
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Team Uploads as been reset
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /titles/{title_id}/users:
+    get:
+      operationId: getUsersByTitle
+      tags:
+        - Users
+      summary: Get a list of users by title
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: title_id
+          in: path
+          required: true
+          description: The ID of the title
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /users:
+    get:
+      operationId: getUsers
+      tags:
+        - Users
+      summary: Get a list of users
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id desc by default.
+            Must be one of: id, login, email, encrypted_password, reset_password_token, reset_password_sent_at, created_at, updated_at, image, first_name, last_name, pool_year, pool_month, kind, status, otp_secret_key, otp_tmp, otp_activated, otp_backup_passwords, slack_team, slack_login, slack_mail, slack_code_validation, slack_validated_at, token_id, email_stop, linked_user_id, usual_first_name, last_seen_at, password_changed_at, encrypted_single_usage_password, first_warn_anon_sent_at, second_warn_anon_sent_at, alumnized_at, anonymized_at.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status, primary_campus_id, first_name, last_name, alumni?, staff?.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, login, email, created_at, updated_at, pool_year, pool_month, kind, status.      - $ref: "#/components/parameters/page"
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /users/{id}:
+    get:
+      operationId: getUserById
+      tags:
+        - Users
+      summary: Get a user by ID
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID or Login of the user
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /users/{id}/user_candidature:
+    get:
+      operationId: getUserCandidatureById
+      tags:
+        - User Candidatures
+      summary: Get user candidature information
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the user
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User candidature information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCandidature'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /users/{user_id}/closes:
+    get:
+      operationId: getClosesByUserId
+      tags:
+        - Closes
+      summary: 🔑 Get a list of closes by user id
+      x-roles-required:
+        - Basic Staff
+      security:
+        - OAuth2:
+            - public
+            - tig
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The user id
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by created_at desc, id desc by default.
+            Must be one of: id, user_id, closer_id, reason, state, created_at, updated_at, kind, end_at, jid.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields. Must be one of: id, user_id, closer_id, reason, state, created_at, updated_at, kind, end_at, jid, campus_id, end.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range. Must be one of: id, user_id, closer_id, reason, state, created_at, updated_at, kind, end_at, jid.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of closes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Close'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /users/{user_id}/internships:
+    get:
+      operationId: getInternshipsByUserId
+      tags:
+        - Internships
+      summary: 🔑 Get a list of internships by user Id
+      security:
+        - OAuth2:
+            - public
+      x-roles-required:
+        - Companies manager
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The user id
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by created_at desc, id desc by default.
+            Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields. Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id, start, end, breach.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range. Must be one of: id, user_id, administration_id, offer_id, language_id, state, days, user_address, user_postal, user_city, user_country, company_name, company_boss_user_first_name, company_boss_user_last_name, company_boss_user_email, company_boss_user_phone, company_user_first_name, company_user_last_name, company_user_post, company_user_email, company_user_phone, company_address, company_postal, company_city, company_country, company_siret, internship_address, internship_postal, internship_city, internship_country, contract_type, subject, start_at, end_at, duration, nb_days, nb_hours, movement, salary, currency, breach_at, convention, created_at, updated_at, anti_grav_units_user_id.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of internships
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Internship'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /users/{user_id}/internships/{id}:
+    get:
+      operationId: getInternshipByIdAndUserId
+      tags:
+        - Internships
+      summary: 🔑 Get an internship by ID and user ID
+      security:
+        - OAuth2:
+            - public
+      x-roles-required:
+        - Companies manager
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The user id
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          description: The internship id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An internship object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Internship'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /users/{user_id}/notes:
+    get:
+      operationId: GetNotesByUserId
+      tags:
+        - Notes
+      summary: 👤 Get a list of notes by a user Id
+      security:
+        - OAuth2:
+            - public
+      x-roles-scoped:
+        - Notes manager
+        - Advanced notes manager
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id asc by default.
+            Must be one of: id, user_id, from, subject, content, created_at, updated_at, kind, approved_at, approver_id, from_user_id.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, user_id, from, subject, content, created_at, updated_at, kind, approved_at, approver_id, from_user_id, approved.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, user_id, from, subject, content, created_at, updated_at, kind, approved_at, approver_id, from_user_id.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of notes
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightNote'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /users/{user_id}/projects/{project_id}/teams:
+    get:
+      operationId: GetTeamsByUserIdAndProjectId
+      tags:
+        - Teams
+      summary: Get a list of teams by a user Id and project Id
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user
+          schema:
+            type: string
+        - name: project_id
+          in: path
+          required: true
+          description: The ID of the project
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id asc by default.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status, cursus, active_cursus, campus, primary_campus, locked, closed, deadline, terminating, with_mark.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of teams
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightTeam'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /users/{user_id}/projects_users:
+    get:
+      operationId: getProjectsUsersByUserId
+      tags:
+        - Projects Users
+      summary: Get a list of projects users by a user Id
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields. Must be one of: id, project_id, user_id, created_at, updated_at, occurrence, final_mark, retriable_at, marked_at, status, cursus, campus, retriable, marked.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range. Must be one of: id, project_id, user_id, created_at, updated_at, occurrence, final_mark, retriable_at, marked_at, status.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of projects users
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectUser'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /users/{user_id}/teams:
+    get:
+      operationId: GetTeamsByUserId
+      tags:
+        - Teams
+      summary: Get a list of teams by a user Id
+      security:
+        - OAuth2:
+            - public
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: The ID of the user
+          schema:
+            type: string
+        - $ref: '#/components/parameters/base_sort'
+          description: |
+            The sort field. Sorted by id asc by default.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/base_filter'
+          description: |
+            Filtering on one or more fields.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status, cursus, active_cursus, campus, primary_campus, locked, closed, deadline, terminating, with_mark.
+        - $ref: '#/components/parameters/base_range'
+          description: |
+            Select on a particular range.
+            Must be one of: id, project_id, name, created_at, updated_at, locked_at, closed_at, final_mark, repo_url, repo_uuid, deadline_at, terminating_at, project_session_id, status.
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/per_page'
+        - $ref: '#/components/parameters/page_number'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: A list of teams
+          headers:
+            Link:
+              $ref: '#/components/headers/Link'
+            X-Page:
+              $ref: '#/components/headers/X-Page'
+            X-Per-Page:
+              $ref: '#/components/headers/X-Per-Page'
+            X-Total:
+              $ref: '#/components/headers/X-Total'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LightTeam'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  schemas:
+    Accreditation:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        user_id:
+          type: integer
+        cursus_id:
+          type: integer
+        validated:
+          type: boolean
+      required:
+        - id
+        - name
+        - user_id
+        - cursus_id
+        - validated
+    LightAchievementsUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        achievement_id:
+          type: integer
+        user_id:
+          type: integer
+        login:
+          type: string
+        nbr_of_success:
+          type:
+            - integer
+            - 'null'
+        url:
+          type: string
+          format: uri
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - achievement_id
+        - user_id
+        - login
+        - nbr_of_success
+        - url
+        - created_at
+        - updated_at
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        tier:
+          type: string
+        kind:
+          type: string
+        visible:
+          type: boolean
+        image:
+          type: string
+        nbr_of_success:
+          type:
+            - integer
+            - 'null'
+        users_url:
+          type: string
+          format: uri
+      required:
+        - id
+        - name
+        - description
+        - tier
+        - kind
+        - visible
+        - image
+        - users_url
+    LightApp:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type:
+            - string
+            - 'null'
+        image:
+          type:
+            - string
+            - 'null'
+        website:
+          type:
+            - string
+            - 'null'
+        public:
+          type: boolean
+        scopes:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        rate_limit:
+          type: integer
+      required:
+        - id
+        - name
+        - public
+        - scopes
+        - created_at
+        - updated_at
+        - rate_limit
+    Bloc:
+      type: object
+      properties:
+        id:
+          type: integer
+        campus_id:
+          type: integer
+        cursus_id:
+          type: integer
+        squad_size:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - campus_id
+        - cursus_id
+        - squad_size
+        - created_at
+        - updated_at
+    Campus:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        time_zone:
+          type: string
+        language:
+          $ref: '#/components/schemas/Language'
+        users_count:
+          type: integer
+        vogsphere_id:
+          type: integer
+        country:
+          type: string
+        address:
+          type: string
+        zip:
+          type: string
+        city:
+          type: string
+        website:
+          type: string
+          format: uri
+        facebook:
+          type: string
+          format: uri
+        twitter:
+          type: string
+          format: uri
+        active:
+          type: boolean
+        public:
+          type: boolean
+        email_extension:
+          type: string
+        default_hidden_phone:
+          type: boolean
+      required:
+        - id
+        - name
+        - time_zone
+        - users_count
+        - vogsphere_id
+        - country
+        - city
+        - active
+        - public
+        - email_extension
+    LightCampus:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        time_zone:
+          type: string
+        users_count:
+          type: integer
+        vogsphere_id:
+          type: integer
+        country:
+          type: string
+        address:
+          type: string
+        zip:
+          type: string
+        city:
+          type: string
+        website:
+          type: string
+          format: uri
+        facebook:
+          type: string
+          format: uri
+        twitter:
+          type: string
+          format: uri
+        active:
+          type: boolean
+        public:
+          type: boolean
+        email_extension:
+          type: string
+        default_hidden_phone:
+          type: boolean
+      required:
+        - id
+        - name
+        - time_zone
+        - users_count
+        - vogsphere_id
+        - country
+        - address
+        - zip
+        - city
+        - website
+        - facebook
+        - twitter
+        - active
+        - public
+        - email_extension
+        - default_hidden_phone
+    CampusUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        campus_id:
+          type: integer
+        is_primary:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - user_id
+        - campus_id
+        - is_primary
+        - created_at
+        - updated_at
+    Close:
+      allOf:
+        - $ref: '#/components/schemas/LightClose'
+          type: object
+          properties:
+            user:
+              allOf:
+                - $ref: '#/components/schemas/UserPreview'
+            closer:
+              allOf:
+                - $ref: '#/components/schemas/UserPreview'
+            community_services:
+              type: array
+              items:
+                $ref: '#/components/schemas/LightCommunityService'
+          required:
+            - user
+            - closer
+            - community_services
+    LightClose:
+      type: object
+      properties:
+        id:
+          type: integer
+        reason:
+          type: string
+        state:
+          type: string
+          enum:
+            - close
+            - unclose
+        kind:
+          type: string
+          enum:
+            - agu
+            - other
+            - deserter
+            - pace_unknown
+            - black_hole
+            - serious_misconduct
+            - social_security
+            - non_admitted
+        end_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        primary_campus_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - reason
+        - state
+        - kind
+        - end_at
+        - primary_campus_id
+        - created_at
+        - updated_at
+    Coalition:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        image_url:
+          type:
+            - string
+            - 'null'
+          format: uri
+        cover_url:
+          type:
+            - string
+            - 'null'
+          format: uri
+        color:
+          type: string
+        score:
+          type: integer
+        user_id:
+          type: integer
+      required:
+        - id
+        - name
+        - slug
+        - color
+        - score
+        - user_id
+    CoalitionsUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        coalition_id:
+          type: integer
+        user_id:
+          type: integer
+        score:
+          type: integer
+        rank:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - coalition_id
+        - user_id
+        - score
+        - rank
+        - created_at
+        - updated_at
+    CommunityService:
+      allOf:
+        - $ref: '#/components/schemas/LightCommunityService'
+          type: object
+          properties:
+            close:
+              $ref: '#/components/schemas/LightClose'
+          required:
+            - close
+    LightCommunityService:
+      type: object
+      properties:
+        id:
+          type: integer
+        duration:
+          type: integer
+        schedule_at:
+          type: string
+          format: date-time
+        occupation:
+          type: string
+        state:
+          type: string
+          enum:
+            - invalidated
+            - beginning
+            - schedule
+            - validated
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - duration
+        - schedule_at
+        - occupation
+        - state
+        - created_at
+        - updated_at
+    Cursus:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        name:
+          type: string
+        slug:
+          type: string
+        kind:
+          type: string
+      required:
+        - id
+        - created_at
+        - name
+        - slug
+        - kind
+    CursusUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        begin_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        end_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        grade:
+          type: string
+        level:
+          type: number
+          format: double
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        cursus_id:
+          type: integer
+        has_coalition:
+          type: boolean
+        blackholed_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        cursus:
+          $ref: '#/components/schemas/Cursus'
+        user:
+          $ref: '#/components/schemas/LightUser'
+      required:
+        - id
+        - begin_at
+        - end_at
+        - grade
+        - level
+        - skills
+        - cursus_id
+        - cursus
+        - has_coalition
+        - blackholed_at
+        - created_at
+        - updated_at
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+        error:
+          type: string
+          description: Error message
+      example:
+        status: 401
+        error: The access token is invalid
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        location:
+          type:
+            - string
+            - 'null'
+        kind:
+          type: string
+        max_people:
+          type:
+            - integer
+            - 'null'
+        nbr_subscribers:
+          type: integer
+        begin_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        end_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        campus_ids:
+          type: array
+          items:
+            type: integer
+        cursus_ids:
+          type: array
+          items:
+            type: integer
+        themes:
+          type: array
+          items:
+            type: object
+        waitlist:
+          type:
+            - object
+            - 'null'
+        difficulty:
+          type:
+            - integer
+            - 'null'
+        prohibition_of_cancellation:
+          type:
+            - integer
+            - 'null'
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - name
+        - description
+        - kind
+        - nbr_subscribers
+        - begin_at
+        - end_at
+        - campus_ids
+        - cursus_ids
+    EventsUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        event_id:
+          type: integer
+        user_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        user:
+          $ref: '#/components/schemas/UserPreview'
+        event:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+      required:
+        - id
+        - event_id
+        - user_id
+    Expertise:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        kind:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - name
+        - slug
+        - kind
+    ExpertisesUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        expertise_id:
+          type: integer
+        user_id:
+          type: integer
+        interested:
+          type: boolean
+        value:
+          type:
+            - integer
+            - 'null'
+        contact_me:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        expertise:
+          $ref: '#/components/schemas/Expertise'
+      required:
+        - id
+        - expertise_id
+        - user_id
+        - interested
+        - contact_me
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+        - id
+        - name
+    GroupsUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        group_id:
+          type: integer
+        user_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        user:
+          $ref: '#/components/schemas/UserPreview'
+        group:
+          $ref: '#/components/schemas/Group'
+      required:
+        - id
+        - group_id
+        - user_id
+    Internship:
+      type: object
+      properties:
+        id:
+          type: integer
+        administration_id:
+          type: integer
+        offer_id:
+          type:
+            - integer
+            - 'null'
+        language_id:
+          type: integer
+        state:
+          type: string
+        days:
+          type: string
+        user_address:
+          type: string
+        user_postal:
+          type: string
+        user_city:
+          type: string
+        user_country:
+          type: string
+        company_name:
+          type: string
+        company_boss_user_first_name:
+          type: string
+        company_boss_user_last_name:
+          type: string
+        company_boss_user_email:
+          type: string
+        company_boss_user_phone:
+          type: string
+        company_user_first_name:
+          type: string
+        company_user_last_name:
+          type: string
+        company_user_post:
+          type: string
+        company_user_email:
+          type: string
+        company_user_phone:
+          type: string
+        company_address:
+          type: string
+        company_postal:
+          type: string
+        company_city:
+          type: string
+        company_country:
+          type: string
+        company_siret:
+          type: string
+        internship_address:
+          type: string
+        internship_postal:
+          type: string
+        internship_city:
+          type: string
+        internship_country:
+          type: string
+        contract_type:
+          type: string
+        subject:
+          type: string
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+        nb_days:
+          type: integer
+        nb_hours:
+          type: integer
+        salary:
+          anyOf:
+            - type: integer
+            - type: number
+        currency:
+          type: string
+        breach_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+        convention:
+          type: object
+          properties:
+            convention:
+              type: object
+              properties:
+                url:
+                  type:
+                    - string
+                    - 'null'
+              required:
+                - url
+          required:
+            - convention
+        convention_uri:
+          type:
+            - string
+            - 'null'
+          format: uri
+        projects_user:
+          type:
+            - integer
+            - 'null'
+        user:
+          $ref: '#/components/schemas/LightUser'
+      required:
+        - id
+        - administration_id
+        - offer_id
+        - language_id
+        - state
+        - days
+        - user_address
+        - user_postal
+        - user_city
+        - user_country
+        - company_name
+        - company_boss_user_first_name
+        - company_boss_user_last_name
+        - company_boss_user_email
+        - company_boss_user_phone
+        - company_user_first_name
+        - company_user_last_name
+        - company_user_post
+        - company_user_email
+        - company_user_phone
+        - company_address
+        - company_postal
+        - company_city
+        - company_country
+        - company_siret
+        - internship_address
+        - internship_postal
+        - internship_city
+        - internship_country
+        - contract_type
+        - subject
+        - start_at
+        - end_at
+        - duration
+        - nb_days
+        - nb_hours
+        - salary
+        - currency
+        - breach_at
+        - convention
+        - convention_uri
+        - user
+    Language:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        identifier:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - name
+        - identifier
+        - created_at
+        - updated_at
+    LanguageUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        language_id:
+          type: integer
+        user_id:
+          type: integer
+        position:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - language_id
+        - user_id
+        - position
+        - created_at
+    Location:
+      type: object
+      properties:
+        id:
+          type: integer
+        begin_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        end_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        primary:
+          type: boolean
+        host:
+          type: string
+        campus_id:
+          type: integer
+        user:
+          $ref: '#/components/schemas/UserPreview'
+      required:
+        - id
+        - begin_at
+        - primary
+        - host
+        - campus_id
+    LightNote:
+      type: object
+      description: A comment or note left by one user about another (e.g. a scale/feedback note).
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of this note.
+        from_user:
+          allOf:
+            - $ref: '#/components/schemas/LightNoteUser'
+          description: The user who wrote the note.
+        subject:
+          type: string
+          description: The subject or title of the note.
+        content:
+          type: string
+          description: The body content of the note.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the note was created.
+        user:
+          allOf:
+            - $ref: '#/components/schemas/LightNoteUser'
+          description: The user the note is about.
+      required:
+        - id
+        - from_user
+        - subject
+        - content
+        - created_at
+        - user
+    LightNoteUser:
+      type: object
+      description: A minimal reference to a user.
+      properties:
+        id:
+          type: integer
+          description: The user's unique identifier.
+        login:
+          type: string
+          description: The user's login.
+        url:
+          type: string
+          format: uri
+          description: The URL of the user's resource.
+      required:
+        - id
+        - login
+        - url
+    Patronage:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        godson_id:
+          type: integer
+        godfather_id:
+          type: integer
+        ongoing:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - ongoing
+        - created_at
+        - updated_at
+    LightProject:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        parent_id:
+          type:
+            - integer
+            - 'null'
+      required:
+        - id
+        - name
+        - slug
+        - parent_id
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        exam:
+          type: boolean
+        parent:
+          $ref: '#/components/schemas/LightProject'
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/LightProject'
+        objectives:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              kind:
+                type: string
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        repository:
+          type:
+            - string
+            - 'null'
+          format: uri
+        difficulty:
+          type:
+            - integer
+            - 'null'
+        cursus:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cursus'
+        project_sessions_ids:
+          type: array
+          items:
+            type: integer
+        project_statistics:
+          type: object
+          properties:
+            average_mark:
+              type:
+                - number
+                - 'null'
+            count:
+              type: integer
+      required:
+        - id
+        - name
+        - slug
+        - exam
+    LightProjectUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        occurrence:
+          type: integer
+        final_mark:
+          type:
+            - integer
+            - 'null'
+        status:
+          type: string
+        validated?:
+          type:
+            - boolean
+            - 'null'
+        current_team_id:
+          type: integer
+        project:
+          $ref: '#/components/schemas/LightProject'
+        cursus_ids:
+          type: array
+          items:
+            type: integer
+        marked_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        marked:
+          type:
+            - boolean
+            - 'null'
+        retriable_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - occurrence
+        - final_mark
+        - status
+        - validated?
+        - current_team_id
+        - project
+        - cursus_ids
+        - marked_at
+        - marked
+        - retriable_at
+        - created_at
+        - updated_at
+    ProjectUser:
+      allOf:
+        - $ref: '#/components/schemas/LightProjectUser'
+        - type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/LightUser'
+            teams:
+              type: array
+              items:
+                $ref: '#/components/schemas/LightTeam'
+          required:
+            - user
+            - teams
+    ProjectUserCreate:
+      type: object
+      required:
+        - project_id
+        - user_id
+      properties:
+        id:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: The id.
+        project_id:
+          type: integer
+          format: int64
+          description: The project id.
+        user_id:
+          type: integer
+          format: int64
+          description: The user id. Must be unique in the scope of a given project.
+        created_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        occurrence:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          default: 0
+          description: The occurrence.
+        final_mark:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: The final mark.
+        retriable_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        marked_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        status:
+          type:
+            - string
+            - 'null'
+          default: unknown
+          description: The status.
+        skip_check_permission:
+          type:
+            - string
+            - 'null'
+          description: The skip check permission.
+    ProjectUserUpdate:
+      type: object
+      properties:
+        id:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: The id.
+        project_id:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: The project id.
+        user_id:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: The user id. Must be unique in the scope of a given project.
+        created_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+          description: The created at.
+        updated_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+          description: The updated at.
+        occurrence:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          default: 0
+          description: The occurrence. Default to 0.
+        final_mark:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: The final mark.
+        retriable_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+          description: The retriable at.
+        marked_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+          description: The marked at.
+        status:
+          type:
+            - string
+            - 'null'
+          default: unknown
+          description: The status. Default to unknown.
+        skip_check_permission:
+          type:
+            - string
+            - 'null'
+          description: The skip check permission.
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+        - id
+        - name
+    ScaleTeam:
+      type: object
+      properties:
+        id:
+          type: integer
+        scale_id:
+          type: integer
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        feedback:
+          type: string
+        final_mark:
+          type:
+            - integer
+            - 'null'
+        flag:
+          $ref: '#/components/schemas/ScaleFlag'
+        begin_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        correcteds:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScaleUser'
+        corrector:
+          $ref: '#/components/schemas/ScaleUser'
+        truant:
+          type: object
+          additionalProperties: true
+        filled_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        questions_with_answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionWithAnswers'
+        teams_uploads:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamUpload'
+      required:
+        - id
+        - scale_id
+        - comment
+        - created_at
+        - updated_at
+        - feedback
+        - final_mark
+        - flag
+        - begin_at
+        - correcteds
+        - corrector
+        - truant
+        - filled_at
+        - questions_with_answers
+    ScaleFlag:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        positive:
+          type: boolean
+        icon:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - name
+        - positive
+        - icon
+        - created_at
+        - updated_at
+    ScaleUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        login:
+          type: string
+        url:
+          type: string
+          format: uri
+      required:
+        - id
+        - login
+        - url
+    QuestionWithAnswers:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        guidelines:
+          type: string
+        rating:
+          type: string
+        kind:
+          type: string
+        position:
+          type: integer
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionAnswer'
+      required:
+        - id
+        - name
+        - guidelines
+        - rating
+        - kind
+        - position
+        - answers
+    QuestionAnswer:
+      type: object
+      properties:
+        id:
+          type: integer
+        value:
+          type:
+            - integer
+            - 'null'
+        answer:
+          type:
+            - string
+            - 'null'
+      required:
+        - id
+        - value
+        - answer
+    TeamUpload:
+      type: object
+      properties:
+        id:
+          type: integer
+        final_mark:
+          type:
+            - integer
+            - 'null'
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        upload_id:
+          type: integer
+      required:
+        - id
+        - final_mark
+        - comment
+        - created_at
+        - upload_id
+    Skill:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        level:
+          type: number
+          format: double
+      required:
+        - id
+        - name
+        - level
+    Slot:
+      type: object
+      properties:
+        id:
+          type: integer
+        begin_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        end_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        scale_team_id:
+          type:
+            - integer
+            - 'null'
+        user:
+          $ref: '#/components/schemas/LightUser'
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - begin_at
+        - end_at
+    SlotCreate:
+      type: object
+      required:
+        - slot
+      properties:
+        slot:
+          type: object
+          properties:
+            user_id:
+              type: integer
+              description: Must match the token owner unless Advanced tutor
+            begin_at:
+              type: string
+              format: date-time
+              x-go-type: IntraTime
+            end_at:
+              type: string
+              format: date-time
+              x-go-type: IntraTime
+            scale_team_id:
+              type:
+                - integer
+                - 'null'
+              description: Optional defense to link to this slot
+          required:
+            - user_id
+            - begin_at
+            - end_at
+    LightTeam:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        final_mark:
+          type:
+            - integer
+            - 'null'
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        status:
+          type: string
+        terminating_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/LightTeamUser'
+        locked?:
+          type: boolean
+        validated?:
+          type: boolean
+        closed?:
+          type: boolean
+        repo_url:
+          type:
+            - string
+            - 'null'
+        repo_uuid:
+          type: string
+        locked_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        closed_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        project_session_id:
+          type: integer
+        project_gitlab_path:
+          type:
+            - string
+            - 'null'
+      required:
+        - id
+        - name
+        - url
+        - project_id
+        - created_at
+        - updated_at
+        - status
+        - terminating_at
+        - users
+        - locked?
+        - validated?
+        - closed?
+        - repo_url
+        - repo_uuid
+        - locked_at
+        - closed_at
+        - project_session_id
+        - project_gitlab_path
+    Team:
+      allOf:
+        - $ref: '#/components/schemas/LightTeam'
+        - type: object
+          properties:
+            scale_teams:
+              type: array
+              items:
+                $ref: '#/components/schemas/ScaleTeam'
+          required:
+            - scale_teams
+    TeamUpdate:
+      type: object
+      properties:
+        project_id:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: The project id.
+        name:
+          type:
+            - string
+            - 'null'
+          maxLength: 255
+          description: The name.
+        created_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        locked_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        closed_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        final_mark:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: The final mark.
+        repo_url:
+          type:
+            - string
+            - 'null'
+          description: The repo url.
+        repo_uuid:
+          type:
+            - string
+            - 'null'
+          description: The repo uuid.
+        deadline_at:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: The deadline at. Must be after today.
+        terminating_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        project_session_id:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: The project session id.
+        teams_users_attributes:
+          type:
+            - array
+            - 'null'
+          description: The teams users attributes.
+          items:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: integer
+                format: int64
+                description: The user id. Must be unique in the scope of a given team.
+              leader:
+                type:
+                  - boolean
+                  - 'null'
+                default: false
+                description: Is it leader?
+              validated:
+                type:
+                  - boolean
+                  - 'null'
+                default: false
+                description: Is it validated?
+              occurrence:
+                type:
+                  - integer
+                  - 'null'
+                format: int64
+                default: 0
+                description: The occurrence.
+    LightTeamUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        login:
+          type: string
+        url:
+          type: string
+          format: uri
+        leader:
+          type: boolean
+        occurrence:
+          type: integer
+        validated:
+          type: boolean
+        projects_user_id:
+          type: integer
+      required:
+        - id
+        - login
+        - url
+        - leader
+        - occurrence
+        - validated
+        - projects_user_id
+    Title:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+        - id
+        - name
+    TitleUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        title_id:
+          type: integer
+        selected:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - user_id
+        - title_id
+        - selected
+        - created_at
+        - updated_at
+    Translation:
+      type: object
+      properties:
+        id:
+          type: integer
+        translatable_id:
+          type: integer
+        translatable_type:
+          type: string
+        language_id:
+          type: integer
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+        up_to_date:
+          type: boolean
+        default:
+          type: boolean
+        user_id:
+          type:
+            - integer
+            - 'null'
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+      required:
+        - id
+        - translatable_id
+        - translatable_type
+        - language_id
+        - fields
+    UserCandidature:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        birth_date:
+          type: string
+          format: date
+        gender:
+          type:
+            - string
+            - 'null'
+          enum:
+            - male
+            - female
+            - other
+        zip_code:
+          type:
+            - string
+            - 'null'
+        country:
+          type:
+            - string
+            - 'null'
+        birth_city:
+          type: string
+        birth_country:
+          type:
+            - string
+            - 'null'
+        postal_street:
+          type: string
+        postal_complement:
+          type:
+            - string
+            - 'null'
+        postal_city:
+          type: string
+        postal_zip_code:
+          type: string
+        postal_country:
+          type: string
+        contact_affiliation:
+          type: string
+        contact_last_name:
+          type: string
+        contact_first_name:
+          type: string
+        contact_phone1:
+          type: string
+        contact_phone2:
+          type:
+            - string
+            - 'null'
+        max_level_memory:
+          type:
+            - number
+            - 'null'
+          format: double
+        max_level_logic:
+          type:
+            - number
+            - 'null'
+          format: double
+        other_information:
+          type:
+            - string
+            - 'null'
+        language:
+          type: string
+        meeting_date:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        piscine_date:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+        phone:
+          type: string
+        email:
+          type: string
+        pin:
+          type: string
+        phone_country_code:
+          type: string
+        hidden_phone:
+          type: boolean
+      required:
+        - id
+        - user_id
+        - birth_city
+        - postal_street
+        - postal_city
+        - postal_zip_code
+        - postal_country
+        - contact_affiliation
+        - contact_last_name
+        - contact_first_name
+        - contact_phone1
+        - language
+        - created_at
+        - updated_at
+        - phone
+        - email
+        - pin
+        - phone_country_code
+        - hidden_phone
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of the user.
+        login:
+          type: string
+          description: The login name of the user.
+        first_name:
+          type: string
+          description: The first name of the user.
+        usual_first_name:
+          type:
+            - string
+            - 'null'
+          description: The usual first name of the user, first_name if none.
+        usual_full_name:
+          type: string
+          description: The usual full name of the user, usually usual_first_name or first_name + last_name.
+        last_name:
+          type: string
+          description: The last name of the user.
+        email:
+          type: string
+          description: The email address of the user.
+          format: email
+        phone:
+          type: string
+          description: The phone number of the user (always hidden).
+        displayname:
+          type: string
+          description: The display name of the user.
+        kind:
+          type: string
+          description: The kind of user (e.g., student, admin, external).
+          enum:
+            - student
+            - admin
+            - external
+        image:
+          $ref: '#/components/schemas/UserImage'
+        staff?:
+          type: boolean
+          description: Indicates if the user is staff.
+        correction_point:
+          type: integer
+          description: The user's correction points.
+        pool_month:
+          type: string
+          description: The month of the user's pool.
+        pool_year:
+          type: string
+          description: The year of the user's pool.
+        location:
+          type:
+            - string
+            - 'null'
+          description: The location of the user.
+        wallet:
+          type: integer
+          description: The user's wallet balance.
+        anonymize_date:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+          description: The date when user data will be anonymized.
+        data_erasure_date:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+          description: The date when user data will be erased.
+        created_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+          description: The user creation timestamp.
+        updated_at:
+          type: string
+          format: date-time
+          x-go-type: IntraTime
+          description: The last user update timestamp.
+        alumnized_at:
+          description: The date when the user became an alumnus.
+          type:
+            - string
+            - 'null'
+          format: date-time
+          x-go-type: IntraTime
+        alumni?:
+          type: boolean
+          description: Indicates if the user is an alumnus.
+        active?:
+          type: boolean
+          description: Indicates if the user is active.
+      required:
+        - id
+        - login
+        - first_name
+        - last_name
+        - usual_full_name
+        - email
+        - displayname
+        - kind
+        - image
+        - staff?
+        - correction_point
+        - pool_month
+        - pool_year
+        - wallet
+        - anonymize_date
+        - data_erasure_date
+        - created_at
+        - updated_at
+        - alumnized_at
+        - alumni?
+        - active?
+    UserImage:
+      type: object
+      properties:
+        link:
+          type: string
+          format: uri
+          description: The URL to the user's image.
+        versions:
+          type: object
+          properties:
+            large:
+              type: string
+              format: uri
+              description: URL to the large version of the user's image.
+            medium:
+              type: string
+              format: uri
+              description: URL to the medium version of the user's image.
+            small:
+              type: string
+              format: uri
+              description: URL to the small version of the user's image.
+            micro:
+              type: string
+              format: uri
+              description: URL to the micro version of the user's image.
+          required:
+            - large
+            - medium
+            - small
+            - micro
+      required:
+        - link
+        - versions
+    User:
+      allOf:
+        - $ref: '#/components/schemas/LightUser'
+        - type: object
+          properties:
+            groups:
+              type: array
+              items:
+                $ref: '#/components/schemas/Group'
+            cursus_users:
+              type: array
+              items:
+                $ref: '#/components/schemas/CursusUser'
+            projects_users:
+              type: array
+              items:
+                $ref: '#/components/schemas/LightProjectUser'
+            languages_users:
+              type: array
+              items:
+                $ref: '#/components/schemas/LanguageUser'
+            achievements:
+              type: array
+              items:
+                $ref: '#/components/schemas/Achievement'
+            titles:
+              type: array
+              items:
+                $ref: '#/components/schemas/Title'
+            titles_users:
+              type: array
+              items:
+                $ref: '#/components/schemas/TitleUser'
+            patroned:
+              type: array
+              items:
+                $ref: '#/components/schemas/Patronage'
+            patroning:
+              type: array
+              items:
+                $ref: '#/components/schemas/Patronage'
+            roles:
+              type: array
+              items:
+                $ref: '#/components/schemas/Role'
+            campus:
+              type: array
+              items:
+                $ref: '#/components/schemas/Campus'
+            campus_users:
+              type: array
+              items:
+                $ref: '#/components/schemas/CampusUser'
+          required:
+            - groups
+            - cursus_users
+            - projects_users
+            - languages_users
+            - achievements
+            - titles
+            - titles_users
+            - patroned
+            - patroning
+            - roles
+            - campus
+            - campus_users
+    UserPreview:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of the user.
+        login:
+          type: string
+          description: The login name of the user.
+        url:
+          type: string
+          format: uri
+          description: The URL to the user's resource.
+      required:
+        - id
+        - login
+        - url
+  parameters:
+    base_sort:
+      name: sort
+      in: query
+      description: |
+        The sort field. Sorted by id desc by default.
+      required: false
+      schema:
+        type: string
+      examples:
+        default:
+          summary: Default sort
+          description: Sort by created_at descending, then updated_at ascending.
+          value: -created_at,updated_at
+    base_filter:
+      name: filter
+      in: query
+      description: |
+        Filtering on one or more fields.
+      required: false
+      schema:
+        type: object
+        additionalProperties:
+          type: string
+      style: deepObject
+      explode: true
+      examples:
+        byId:
+          summary: Filter by ID
+          description: Match records whose id is one of the given values.
+          value:
+            id: a_value,another_value
+    base_range:
+      name: range
+      in: query
+      description: |
+        Select on a particular range.
+      required: false
+      schema:
+        type: object
+        additionalProperties:
+          type: string
+      style: deepObject
+      explode: true
+      examples:
+        updatedAtRange:
+          summary: Range on updated_at
+          description: Match records updated between min_value and max_value.
+          value:
+            updated_at: min_value,max_value
+    page:
+      name: page
+      in: query
+      description: |
+        Page number (1-based). The 42 API paginates index endpoints and defaults to 30 items per page.
+        You can also use the `per_page` parameter to set the page size (up to 100 for many endpoints).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+    per_page:
+      name: per_page
+      in: query
+      description: |
+        Number of items per page. Maximum is generally 100 but some endpoints limit this for technical reasons.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    page_number:
+      name: page[number]
+      in: query
+      description: |
+        Alternate pagination style using `page[number]` (1-based page index). Can be used together with `page[size]`.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+    page_size:
+      name: page[size]
+      in: query
+      description: |
+        Alternate pagination style to set the page size (maximum depends on endpoint, commonly up to 100).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+  headers:
+    Link:
+      description: |
+        RFC5988 Web Linking header containing `first`, `prev`, `next` and `last` links when available.
+        Example: <https://api.intra.42.fr/v2/Users?page=2>; rel="next", <https://api.intra.42.fr/v2/Users?page=1>; rel="prev"
+      schema:
+        type: string
+    X-Page:
+      description: The current page number.
+      schema:
+        type: integer
+    X-Per-Page:
+      description: The current pagination length (items per page).
+      schema:
+        type: integer
+    X-Total:
+      description: The total number of pages available for the resource.
+      schema:
+        type: integer
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth2 authentication using Bearer tokens.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.intra.42.fr/v2/oauth/token
+          scopes:
+            public: Access the user's public data
+            projects: Manage teams, slots and all projects-related stuff
+            profile: Manage user data
+            elearning: Manage media-related stuff
+            tig: Manage community services
+            forum: Manage topics and messages
+        authorizationCode:
+          authorizationUrl: https://api.intra.42.fr/v2/oauth/authorize
+          tokenUrl: https://api.intra.42.fr/v2/oauth/token
+          scopes:
+            public: Access the user's public data
+            projects: Manage teams, slots and all projects-related stuff
+            profile: Manage user data
+            elearning: Manage media-related stuff
+            tig: Manage community services
+            forum: Manage topics and messages

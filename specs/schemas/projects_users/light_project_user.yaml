@@ -1,0 +1,53 @@
+LightProjectUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    occurrence:
+      type: integer
+    final_mark:
+      type: [integer, "null"]
+    status:
+      type: string
+    validated?:
+      type: [boolean, "null"]
+    current_team_id:
+      type: integer
+    project:
+      $ref: "#/components/schemas/LightProject"
+    cursus_ids:
+      type: array
+      items:
+        type: integer
+    marked_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    marked:
+      type: [boolean, "null"]
+    retriable_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - occurrence
+    - final_mark
+    - status
+    - validated?
+    - current_team_id
+    - project
+    - cursus_ids
+    - marked_at
+    - marked
+    - retriable_at
+    - created_at
+    - updated_at

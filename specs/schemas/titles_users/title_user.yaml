@@ -1,0 +1,26 @@
+TitleUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    user_id:
+      type: integer
+    title_id:
+      type: integer
+    selected:
+      type: boolean
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - user_id
+    - title_id
+    - selected
+    - created_at
+    - updated_at

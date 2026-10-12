@@ -1,19 +1,29 @@
-openapi: 3.0.0
+openapi: 3.1.2
 
 info:
   title: Intra 42 API
   description: |
-    This is the OpenAPI specification for the Intra 42 API v2.
-  version: 2.0.0
+    OpenAPI specification for the Intra 42 API v2.
+
+    ## Legend
+
+    - 🔑 — Restricted call. Requires an elevated staff role and/or an application scope beyond `public`.
+    - 👤 — Restricted to the authenticated resource owner. Only accessible with a token belonging to the user whose data is being accessed.
+
+    Some fields within an otherwise accessible response may also be conditionally restricted; these are flagged individually in the field's description rather than in the operation summary.
+  version: 1.0.0
+
 
 servers:
   - url: https://api.intra.42.fr/v2
     description: Production
+  - url: https://api.intra-staging.42.fr/v2
+    description: Staging
 
 components:
   schemas:
     $ref: "./schemas/_index.yaml"
-  
+
   parameters:
     $ref: "./parameters/_index.yaml"
 
@@ -51,24 +61,18 @@ components:
       description: OAuth2 authentication using Bearer tokens.
       flows:
         clientCredentials:
-          tokenUrl: https://api.intra.42.fr/oauth/token
-          scopes:
-            public: "access the user public data"
-            projects: "manage teams, slots and all projects related stuff"
-            profile: "manage user data"
-            elearning: "manage media related stuff"
-            tig: "manage community services"
-            forum: "manage topics and messages"
+          tokenUrl: https://api.intra.42.fr/v2/oauth/token
+          scopes: &oauthScopes
+            public: Access the user's public data
+            projects: Manage teams, slots and all projects-related stuff
+            profile: Manage user data
+            elearning: Manage media-related stuff
+            tig: Manage community services
+            forum: Manage topics and messages
         authorizationCode:
-          authorizationUrl: https://api.intra.42.fr/oauth/authorize
-          tokenUrl: https://api.intra.42.fr/oauth/token
-          scopes:
-            public: "access the user public data"
-            projects: "manage teams, slots and all projects related stuff"
-            profile: "manage user data"
-            elearning: "manage media related stuff"
-            tig: "manage community services"
-            forum: "manage topics and messages"
+          authorizationUrl: https://api.intra.42.fr/v2/oauth/authorize
+          tokenUrl: https://api.intra.42.fr/v2/oauth/token
+          scopes: *oauthScopes
 
 paths:
   $ref: "./paths/_index.yaml"

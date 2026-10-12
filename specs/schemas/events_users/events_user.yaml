@@ -1,0 +1,30 @@
+EventsUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    event_id:
+      type: integer
+    user_id:
+      type: integer
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    user:
+      $ref: "#/components/schemas/UserPreview"
+    event:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+  required:
+    - id
+    - event_id
+    - user_id

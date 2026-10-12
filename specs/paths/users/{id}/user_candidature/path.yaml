@@ -1,0 +1,25 @@
+/users/{id}/user_candidature:
+  get:
+    operationId: getUserCandidatureById
+    tags:
+      - User Candidatures
+    summary: Get user candidature information
+    security:
+      - OAuth2:
+          - public
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the user
+        schema:
+          type: string
+    responses:
+      "200":
+        description: User candidature information
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCandidature"
+      default:
+        $ref: "#/components/responses/ErrorResponse"

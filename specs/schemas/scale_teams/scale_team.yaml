@@ -1,0 +1,169 @@
+ScaleTeam:
+  type: object
+  properties:
+    id:
+      type: integer
+    scale_id:
+      type: integer
+    comment:
+      type: string
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    feedback:
+      type: string
+    final_mark:
+      type: [integer, "null"]
+    flag:
+      $ref: "#/components/schemas/ScaleFlag"
+    begin_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    correcteds:
+      type: array
+      items:
+        $ref: "#/components/schemas/ScaleUser"
+    corrector:
+      $ref: "#/components/schemas/ScaleUser"
+    truant:
+      type: object
+      additionalProperties: true
+    filled_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+    questions_with_answers:
+      type: array
+      items:
+        $ref: "#/components/schemas/QuestionWithAnswers"
+    teams_uploads:
+      type: array
+      items:
+        $ref: "#/components/schemas/TeamUpload"
+  required:
+    - id
+    - scale_id
+    - comment
+    - created_at
+    - updated_at
+    - feedback
+    - final_mark
+    - flag
+    - begin_at
+    - correcteds
+    - corrector
+    - truant
+    - filled_at
+    - questions_with_answers
+
+ScaleFlag:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    positive:
+      type: boolean
+    icon:
+      type: string
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    updated_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+  required:
+    - id
+    - name
+    - positive
+    - icon
+    - created_at
+    - updated_at
+
+ScaleUser:
+  type: object
+  properties:
+    id:
+      type: integer
+    login:
+      type: string
+    url:
+      type: string
+      format: uri
+  required:
+    - id
+    - login
+    - url
+
+QuestionWithAnswers:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    guidelines:
+      type: string
+    rating:
+      type: string
+    kind:
+      type: string
+    position:
+      type: integer
+    answers:
+      type: array
+      items:
+        $ref: "#/components/schemas/QuestionAnswer"
+  required:
+    - id
+    - name
+    - guidelines
+    - rating
+    - kind
+    - position
+    - answers
+
+QuestionAnswer:
+  type: object
+  properties:
+    id:
+      type: integer
+    value:
+      type: [integer, "null"]
+    answer:
+      type: [string, "null"]
+  required:
+    - id
+    - value
+    - answer
+
+TeamUpload:
+  type: object
+  properties:
+    id:
+      type: integer
+    final_mark:
+      type: [integer, "null"]
+    comment:
+      type: string
+    created_at:
+      type: string
+      format: date-time
+      x-go-type: IntraTime
+    upload_id:
+      type: integer
+  required:
+    - id
+    - final_mark
+    - comment
+    - created_at
+    - upload_id

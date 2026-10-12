@@ -1,0 +1,9 @@
+CommunityService:
+  allOf:
+    - $ref: '#/components/schemas/LightCommunityService'
+      type: object
+      properties:
+        close:
+          $ref: "#/components/schemas/LightClose"
+      required:
+        - close

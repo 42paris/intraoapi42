@@ -1,8 +1,14 @@
+base_sort:
+  $ref: base_params.yaml#/base_sort
+base_filter:
+  $ref: base_params.yaml#/base_filter
+base_range:
+  $ref: base_params.yaml#/base_range
 page:
-  $ref: ./pages.yaml#/page
-page_number:
-  $ref: ./pages.yaml#/page_number
-page_size:
-  $ref: ./pages.yaml#/page_size
+  $ref: pages.yaml#/page
 per_page:
-  $ref: ./pages.yaml#/per_page
+  $ref: pages.yaml#/per_page
+page_number:
+  $ref: pages.yaml#/page_number
+page_size:
+  $ref: pages.yaml#/page_size

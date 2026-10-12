@@ -1,0 +1,61 @@
+ProjectUserUpdate:
+  type: object
+  properties:
+    id:
+      type: [integer, "null"]
+      format: int64
+      description: The id.
+
+    project_id:
+      type: [integer, "null"]
+      format: int64
+      description: The project id.
+
+    user_id:
+      type: [integer, "null"]
+      format: int64
+      description: The user id. Must be unique in the scope of a given project.
+
+    created_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+      description: The created at.
+
+    updated_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+      description: The updated at.
+
+    occurrence:
+      type: [integer, "null"]
+      format: int64
+      default: 0
+      description: The occurrence. Default to 0.
+
+    final_mark:
+      type: [integer, "null"]
+      format: int64
+      description: The final mark.
+
+    retriable_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+      description: The retriable at.
+
+    marked_at:
+      type: [string, "null"]
+      format: date-time
+      x-go-type: IntraTime
+      description: The marked at.
+
+    status:
+      type: [string, "null"]
+      default: unknown
+      description: The status. Default to unknown.
+
+    skip_check_permission:
+      type: [string, "null"]
+      description: The skip check permission.
