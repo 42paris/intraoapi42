@@ -42,7 +42,7 @@ func (c Config) WithScopes(scopes ...string) Config {
 	return c
 }
 
-func New(config Config) (*ClientWithResponses, error) {
+func NewTransportClient(config Config) *http.Client {
 	tokenSource := newRefreshableTokenSource(config)
 
 	oauthTransport := &oauth2.Transport{
@@ -54,9 +54,13 @@ func New(config Config) (*ClientWithResponses, error) {
 		Transport: newRetryTransport(oauthTransport, nil, tokenSource),
 	}
 
+	return oauthClient
+}
+
+func New(config Config) (*ClientWithResponses, error) {
 	client, err := NewClientWithResponses(
 		config.ServerURL,
-		WithHTTPClient(oauthClient),
+		WithHTTPClient(NewTransportClient(config)),
 	)
 	if err != nil {
 		return nil, err
